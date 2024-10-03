@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">pokedex</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="grade">Grade</string>
+    <string name="level_percent">42.42%</string>
+    <string name="user_fullname_text">FullName FullyFullo</string>
+    <string name="user_login_text">LOGIN</string>
+    <string name="user_evalPoints_text">42 Points</string>
+    <string name="user_location_text">z42r42p42</string>
+    <string name="login_text">LOGIN TO\n 42 INTRA</string>
+    <string name="profile_picture_desc">Profile picture of the user, from the 42 intra</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="tab_text_1">Profile</string>
+    <string name="tab_text_2">Projects</string>
+    <string name="tab_text_3">Skills</string>
+    <string name="view_pager_desc">User data</string>
+    <string name="tabs_desc">Profile, Projects, Skills</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout_button_desc">Logout button</string>
+    <string name="campusTxt">🏫 %1$s</string>
+</resources>

@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Swifty_companion" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/searchbar_input_background_color</item>
+        <item name="colorSecondary">@color/cardview_background_color</item>
+        <item name="colorTertiary">@color/white</item>
+    </style>
+
+    <style name="Theme.Pokedex" parent="Base.Theme.Swifty_companion" />
+
+    <style name="Theme.Pokedex.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Swifty_companion.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Swifty_companion.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

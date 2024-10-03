@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_42"
+    tools:context=".ui.main.UserProfileFragment">
+
+    <TextView
+        android:id="@+id/user_login_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/user_login_text"
+        android:textSize="52sp"
+        android:textColor="@color/white"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.134" />
+
+    <TextView
+        android:id="@+id/user_fullName_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_fullname_text"
+        android:textSize="@dimen/profile_data_text_size"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_avatar"
+        app:layout_constraintVertical_bias="0.02" />
+
+
+
+    <TextView
+        android:id="@+id/user_level_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/level_percent"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/user_avatar"
+        app:layout_constraintTop_toBottomOf="@id/exp_progressBar"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <TextView
+        android:id="@+id/user_grade_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/grade"
+        android:textSize="20sp"
+        android:ellipsize="end"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@id/user_evalPoints_text"
+        app:layout_constraintTop_toBottomOf="@id/user_fullName_text"
+        app:layout_constraintVertical_bias="0.02" />
+
+
+    <TextView
+        android:id="@+id/user_evalPoints_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_evalPoints_text"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/user_avatar"
+        app:layout_constraintTop_toBottomOf="@id/user_fullName_text"
+
+        app:layout_constraintVertical_bias="0.02" />
+
+    <TextView
+        android:id="@+id/user_placeConnected_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_location_text"
+        android:maxEms="6"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="@dimen/profile_data_text_size"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@id/user_level_text"
+        app:layout_constraintTop_toBottomOf="@id/exp_progressBar"
+        app:layout_constraintVertical_bias="0.0" />
+
+<TextView
+        android:id="@+id/user_campus_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Campus"
+        android:maxEms="6"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="@dimen/profile_data_text_size"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/user_level_text"
+        app:layout_constraintTop_toBottomOf="@id/user_level_text"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_login_text"
+        tools:srcCompat="@tools:sample/avatars"
+        android:src="@drawable/cat"
+        app:shapeAppearance="@style/RoundedSquare"
+        android:scaleType="centerCrop"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/profile_picture_desc"
+        />
+
+    <ProgressBar
+        android:id="@+id/exp_progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_evalPoints_text"
+        android:layout_marginBottom="10dp"
+        android:progress="42"
+
+        android:progressTint="@color/light_green"
+        android:progressBackgroundTint="@color/dark_green"
+        android:progressBackgroundTintMode="src_over" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
