@@ -4,14 +4,15 @@ plugins {
 }
 
 android {
-    signingConfigs {
+    //For 42 school computer
+   /* signingConfigs {
         getByName("debug") {
             storeFile = file("/home/tgriffit/debug.keystore")
             storePassword = "changeit"
             keyAlias = "AndroidDebugKey"
             keyPassword = "changeit"
         }
-    }
+    }*/
     namespace = "fr.tgriffit.pokedex"
     compileSdk = 34
 

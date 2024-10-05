@@ -1,6 +1,6 @@
 package fr.tgriffit.pokedex.data.model
 
-data class PokemonData(
+open class PokemonData(
     val id: Int,
     val name: String,
     val baseExperience: Int,

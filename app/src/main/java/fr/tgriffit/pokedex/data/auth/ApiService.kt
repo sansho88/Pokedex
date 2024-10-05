@@ -7,7 +7,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 class Request {
-    val POKEMONS = "pokemons"
+    val POKEMONS = "pokemon"
 
     /**
      * Get an "array" of users matching perfectly the given name.
@@ -15,7 +15,7 @@ class Request {
      * @param name=pokemon's name
      */
     fun pokemonByName(name: String): String {
-        return "$POKEMONS?filter[login]=$name"
+        return "$POKEMONS/$name"
     }
 
     /**
@@ -35,7 +35,7 @@ class ApiService() {
 
     private var TAG = "ApiService"
     private val MAX_TIMEOUT = 42L
-    private val requestPokeApiUrl = "https://pokeapi.co/api/v2/pokemon/"
+    private val requestPokeApiUrl = "https://pokeapi.co/api/v2/"
     val request = Request()
     var lastResponseApi: ResponseApi? = null
 
@@ -65,7 +65,7 @@ class ApiService() {
 
 
         try {
-            val (_, response, result) = fullUrl.httpGet()
+            val (request, response, result) = fullUrl.httpGet()
                 .responseString()
 
             return when (result) {
@@ -80,7 +80,9 @@ class ApiService() {
                 is Result.Failure -> {
                     Log.e(
                         TAG, "[FAILURE] callApi: ${result.error.message}" +
-                                "\n=>${response.responseMessage}"
+                                "\n=>${response.responseMessage}" +
+                                "\n=>${response.statusCode}" +
+                                "\n=>${request.request}"
                     )
                     ResponseApi(code = response.statusCode, value = response.responseMessage)
                 }
