@@ -8,12 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
@@ -28,8 +26,6 @@ private const val TAG = "PokemonProfileActivity"
 
 
 class PokemonProfileFragment : Fragment() {
-
-
     private var pkmn: Pokemon? = null
 
     private lateinit var pkmnName: TextView
@@ -40,7 +36,6 @@ class PokemonProfileFragment : Fragment() {
     private lateinit var pkmnHeight: TextView
     private lateinit var pkmnType: TextView
     private lateinit var pkmnAvatar: ShapeableImageView
-    private lateinit var pkmnExpBar: ProgressBar
     private var _binding: PokemonProfileBinding? = null
 
     private val binding get() = _binding!!
@@ -117,38 +112,16 @@ class PokemonProfileFragment : Fragment() {
         return true
     }
 
-    private fun updatePokemonLevel(level: Double) {
-        pkmnCategory.text = String.format(Locale.US, "Lvl: %,.2f %%", level)
-        pkmnExpBar.progress = ((level - level.toInt()) * 100).toInt()
-    }
-
     @NonNull
     private fun updatePokemonData(updatedPokemon: Pokemon = pkmn!!) {
         pkmnName.text = updatedPokemon.name.uppercase()
         pkmnId.text = String.format(Locale.US, "N° %04d", updatedPokemon.id)
-        val types = "${updatedPokemon.types[0].type.name.uppercase()} ${if (updatedPokemon.types.size > 1) "/ ${updatedPokemon.types[1].type.name.uppercase()}" else ""}"
+        val types = "${updatedPokemon.types[0].type.name.uppercase()}${if (updatedPokemon.types.size > 1) " / ${updatedPokemon.types[1].type.name.uppercase()}" else ""}"
         pkmnType.text = String.format(Locale.US, "%s", types)
         pkmnHeight.text = String.format(Locale.US, "%.1f m",(updatedPokemon.height.toDouble() / 10))
         pkmnWeight.text = String.format(Locale.US, "%.1f kg",(updatedPokemon.weight.toDouble() / 10))
 
-        //pkmnName.text = updatedPokemon.getFullName()
-        //pkmnGrade.text = updatedPokemon.types[0].type.name.uppercase()
-       /* pkmnEvalPoints.text =
-            String.format(
-                Locale.US,
-                "%d point%s",
-                updatedPokemon.getCorrectionPoint(),
-                if (updatedPokemon.getCorrectionPoint() <= 1 && updatedPokemon.getCorrectionPoint() >= -1) "" else "s"
-            )
-        pkmnPosition.text = if(updatedPokemon.location.isNullOrEmpty()) "\uD83D\uDEB7" else updatedPokemon.location
-        val primaryCampusId = updatedPokemon.getCampusPokemons().find { it.is_primary }?.campus_id
-        pkmnCampus.text = getString(
-            R.string.campusTxt,
-            updatedPokemon.getCampus().find { it.id == primaryCampusId }?.name ?: "No campus"
-        )*/
-
         val avatarUrl = updatedPokemon.sprites.front_default ?: Uri.parse("android.resource://fr.tgriffit.pokedex/drawable/cat").toString()
-        Log.d(TAG, "updatePokemonData avatar: ${updatedPokemon.sprites}")
 
         Glide.with(this)
             .load(avatarUrl)
@@ -165,7 +138,6 @@ class PokemonProfileFragment : Fragment() {
         pkmnWeight = binding.pkmnWeightText
         pkmnHeight = binding.pkmnHeightText
         pkmnAvatar = binding.pkmnAvatar
-        //pkmninding.userCampusText
     }
 
     companion object {
@@ -193,6 +165,4 @@ class PokemonProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
-
