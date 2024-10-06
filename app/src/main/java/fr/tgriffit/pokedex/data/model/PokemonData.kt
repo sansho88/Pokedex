@@ -64,17 +64,30 @@ data class Species(
 )
 
 data class Sprites(
-    val backDefault: String?,
-    val backFemale: String?,
-    val backShiny: String?,
-    val backShinyFemale: String?,
-    val frontDefault: String?,
-    val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?,
+    val back_default: String?,
+    val back_female: String?,
+    val back_shiny: String?,
+    val back_shiny_female: String?,
+    val front_default: String?,
+    val front_female: String?,
+    val front_shiny: String?,
+    val front_shiny_female: String?,
     val other: OtherSprites,
     val versions: VersionSprites
-)
+){
+    override fun toString(): String {
+        return "Sprites(backDefault=$back_default," +
+                "\nbackFemale=$back_female, " +
+                "\nbackShiny=$back_shiny, " +
+                "\nbackShinyFemale=$back_shiny_female, " +
+                "\nfrontDefault=$front_default, " +
+                "\n=$front_female, " +
+                "\nfrontShiny=$front_shiny, " +
+                "\nfrontShinyFemale=$front_shiny_female, " +
+                "\nother=$other, " +
+                "\nversions=$versions)"
+    }
+}
 
 data class OtherSprites(
     val dreamWorld: DreamWorldSprites,

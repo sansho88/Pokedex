@@ -24,7 +24,7 @@ import fr.tgriffit.pokedex.databinding.ActivityHomeBinding
 import fr.tgriffit.pokedex.ui.main.ProjectFragment
 import fr.tgriffit.pokedex.ui.main.SectionsPagerAdapter
 import fr.tgriffit.pokedex.ui.main.SkillsFragment
-import fr.tgriffit.pokedex.ui.main.UserProfileFragment
+import fr.tgriffit.pokedex.ui.main.PokemonProfileFragment
 
 
 class HomeActivity : AppCompatActivity() {
@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        sectionsPagerAdapter.addFragment(UserProfileFragment())
+        sectionsPagerAdapter.addFragment(PokemonProfileFragment())
         sectionsPagerAdapter.addFragment(ProjectFragment())
         sectionsPagerAdapter.addFragment(SkillsFragment())
 

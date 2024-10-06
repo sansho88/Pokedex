@@ -67,18 +67,20 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.glide)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx.v284)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.recyclerview)
     implementation(libs.mpandroidchart)
+    implementation(libs.androidx.uiautomator)
+    implementation(libs.androidx.monitor)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    annotationProcessor(libs.androidx.annotation.v181)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.rules)
     implementation (libs.glide)
 
     annotationProcessor(libs.compiler)
+
 }

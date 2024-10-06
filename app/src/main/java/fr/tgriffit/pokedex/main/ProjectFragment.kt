@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.tgriffit.pokedex.data.model.SharedViewModel
 import fr.tgriffit.pokedex.databinding.FragmentProjectListBinding
-import fr.tgriffit.pokedex.ui.main.UserProfileFragment.Companion.ARG_SECTION_NUMBER
+import fr.tgriffit.pokedex.ui.main.PokemonProfileFragment.Companion.ARG_SECTION_NUMBER
 
 /**
  * A fragment representing a list of Items.
@@ -52,10 +52,10 @@ class ProjectFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        sharedViewModel.projectsList.observe(viewLifecycleOwner, Observer {
+        sharedViewModel.projectsList.observe(viewLifecycleOwner) {
             adapter = MyProjectRecyclerViewAdapter(sharedViewModel.projectsList.value)
             recyclerView.adapter = adapter
-        })
+        }
         return root
     }
 
