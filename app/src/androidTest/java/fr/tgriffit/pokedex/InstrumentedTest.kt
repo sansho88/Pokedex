@@ -10,14 +10,19 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withSubstring
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SmallTest
 import org.hamcrest.core.AllOf.allOf
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,7 +36,8 @@ import org.junit.Rule
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
+@SmallTest
 class ProfileInstrumentedTest {
 
     val TARGET_NAME = "ditto"
@@ -51,56 +57,51 @@ class ProfileInstrumentedTest {
     @Test
     fun profile_name_isTARGETNAME() {
         val name = onView(withId(R.id.user_login_text))
-
         checkIfTargetAlreadySearched(name)
-        assertEquals("DITTO", pkmnName)
+        name.check(matches(withText(TARGET_NAME.uppercase())))
     }
 
     @Test
     fun is_pkmn_type_displayed(){
         val type = onView(withId(R.id.pkmn_types_text))
         checkIfTargetAlreadySearched(type)
-        type.perform(getTextFromTextView())
-        assertEquals("NORMAL", text.uppercase())
+        type.check(matches(withText("NORMAL")))
     }
 
     @Test
     fun is_pkmn_id_displayed(){
         val id = onView(withId(R.id.pkmn_id_txtView))
         checkIfTargetAlreadySearched(id)
-        id.perform(getTextFromTextView())
-        assertEquals("N° 0132", text)
+        id.check(matches(withText("N° 0132")))
     }
 
     @Test
     fun is_pkmn_weight_displayed(){
         val weight = onView(withId(R.id.pkmn_weight_text))
         checkIfTargetAlreadySearched(weight)
-        weight.perform(getTextFromTextView())
-        assertEquals("4.0 kg", text)
+        weight.check(matches(withText("4.0 kg")))
+
     }
 
     @Test
     fun is_pkmn_height_displayed(){
         val height = onView(withId(R.id.pkmn_height_text))
         checkIfTargetAlreadySearched(height)
-        height.perform(getTextFromTextView())
-        assertEquals("0.3 m", text)
+        height.check(matches(withText("0.3 m")))
     }
 
     @Test
     fun is_pkmn_category_displayed(){
         val category = onView(withId(R.id.pkmn_category_text))
         checkIfTargetAlreadySearched(category)
-        category.perform(getTextFromTextView())
-        assertEquals("morphing", text.lowercase())
+        category.check(matches(withText("morphing")))
     }
 
     @Test
     fun is_pkmn_avatar_displayed(){
         val avatar = onView(withId(R.id.pkmn_avatar))
         //checkIfTargetAlreadySearched(avatar)
-        avatar.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        avatar.check(matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
@@ -108,7 +109,7 @@ class ProfileInstrumentedTest {
         val bio = onView(withId(R.id.pkmn_desc_txtView))
         checkIfTargetAlreadySearched(bio)
         bio.perform(getTextFromTextView())
-        assert(!text.contains("Description"))
+        bio.check(matches(withSubstring("transform")))
     }
 
     private fun checkIfTargetAlreadySearched(name: ViewInteraction){

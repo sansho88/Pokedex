@@ -8,10 +8,10 @@ import java.util.concurrent.TimeUnit
 
 class Request {
     val POKEMONS = "pokemon"
+    val POKEDEX_ENTRY = "pokemon-species"
 
     /**
-     * Get an "array" of users matching perfectly the given name.
-     * The array is size 1.
+     * Get basics et stats data about a pokemon
      * @param name=pokemon's name
      */
     fun pokemonByName(name: String): String {
@@ -24,6 +24,14 @@ class Request {
      */
     fun pokemonById(id: Int): String {
         return "$POKEMONS/$id"
+    }
+
+    /**
+     * Get pokemon's description from pokedexs of every version
+     * @param id=id of pokemon searched.
+     */
+    fun descPkmnFromPkdx(id: Int): String {
+        return "$POKEDEX_ENTRY/$id"
     }
 }
 
