@@ -1,31 +1,18 @@
 <resources>
     <string name="app_name">pokedex</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
     <string name="weight">42.0 kg</string>
     <string name="pkmn_category_text">Flying keyboard</string>
     <string name="pkmn_description_text">Pokemon Description\n In Some phrases</string>
     <string name="pkmn_name_text">PKMN NAME</string>
     <string name="pkmn_height_text">42.0 m</string>
     <string name="pkmn_types_text">Normal / Electric</string>
-    <string name="login_text">LOGIN TO\n 42 INTRA</string>
-    <string name="profile_picture_desc">Profile picture of the user, from the 42 intra</string>
+    <string name="profile_picture_desc">Pokemon appearance</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="tab_text_1">Profile</string>
-    <string name="tab_text_2">Projects</string>
-    <string name="tab_text_3">Skills</string>
-    <string name="view_pager_desc">User data</string>
-    <string name="tabs_desc">Profile, Projects, Skills</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_text_2">Skills</string>
+    <string name="tab_text_3">Stats</string>
+    <string name="view_pager_desc">Data showed in the tabs</string>
+    <string name="tabs_desc">Profile, Skills, Stats</string>
     <string name="logout_button_desc">Logout button</string>
-    <string name="campusTxt">🏫 %1$s</string>
     <string name="pkmn_id_text">N° 0000</string>
 </resources>

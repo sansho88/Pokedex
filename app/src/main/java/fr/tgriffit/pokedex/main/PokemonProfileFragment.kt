@@ -119,10 +119,13 @@ class PokemonProfileFragment : Fragment() {
     }
 
     @NonNull
-    private fun updatePokemonData(updatedPokemon: Pokemon = pkmn!!) {
+    private fun updatePokemonData(updatedPokemon: Pokemon? = pkmn) {
+        if (updatedPokemon == null)
+            return
         pkmnName.text = updatedPokemon.name.uppercase()
         pkmnId.text = String.format(Locale.US, "N° %04d", updatedPokemon.id)
-        val types = "${updatedPokemon.types[0].type.name.uppercase()}${if (updatedPokemon.types.size > 1) " / ${updatedPokemon.types[1].type.name.uppercase()}" else ""}"
+        Log.d("PokemonProfileFragment", "updatePokemonData: $updatedPokemon")
+        val types = "${updatedPokemon.types.get(0).type.name.uppercase()}${if (updatedPokemon.types.size > 1) " / ${updatedPokemon.types[1].type.name.uppercase()}" else ""}"
         pkmnType.text = String.format(Locale.US, "%s", types)
         pkmnHeight.text = String.format(Locale.US, "%.1f m",(updatedPokemon.height.toDouble() / 10))
         pkmnWeight.text = String.format(Locale.US, "%.1f kg",(updatedPokemon.weight.toDouble() / 10))

@@ -22,6 +22,7 @@ class PkmnSharedViewModel : ViewModel() {
     private val _apiService = MutableLiveData<ApiService>()
     private val _index = MutableLiveData<Int>()
     private val _version = MutableLiveData<Version>()
+    private val _stats = MutableLiveData<List<Stat>>()
    /* private val _projectsList = MutableLiveData<List<PokemonData.ProjectsPokemons>>()*/
     val searchQuery: LiveData<String> = _searchQuery
     val pkmn: LiveData<Pokemon?> = _pkmn
@@ -30,6 +31,7 @@ class PkmnSharedViewModel : ViewModel() {
     val apiService: LiveData<ApiService> = _apiService
     val index: LiveData<Int> = _index
     val version: LiveData<Version> = _version
+    val stats: LiveData<List<Stat>> = _stats
     /*val projectsList: LiveData<List<PokemonData.ProjectsPokemons>> = _projectsList*/
     
     fun setSearchQuery(query: String): PkmnSharedViewModel  {
@@ -54,6 +56,7 @@ class PkmnSharedViewModel : ViewModel() {
     }
     fun setApiService(apiService: ApiService): PkmnSharedViewModel {
         _apiService.postValue(apiService)
+        _apiService.value = apiService
         return this
     }
 
@@ -63,6 +66,11 @@ class PkmnSharedViewModel : ViewModel() {
 
    fun setVersion(version: Version): PkmnSharedViewModel {
         _version.value = version
+        return this
+    }
+
+    fun setStats(stats: List<Stat>): PkmnSharedViewModel {
+        _stats.value = stats
         return this
     }
     
@@ -97,7 +105,7 @@ class PkmnSharedViewModel : ViewModel() {
      * Perform a search on the API.
      * The result is stored in the result variable.
      */
-    fun performSearch(): ApiService.ResponseApi? {
+    private fun performSearch(): ApiService.ResponseApi? {
         if (!apiService.isInitialized) {
             Log.e("SharedViewModel", "performSearch: apiService is null")
             return ApiService.ResponseApi(-1, "apiService is null")
@@ -113,25 +121,43 @@ class PkmnSharedViewModel : ViewModel() {
         return apiResult
     }
 
-    fun searchEntity(request: String): String? {
+    private fun searchEntity(request: String): String? {
         this.setSearchQuery(request)
         this.performSearch()
         return result.value
     }
+
     fun searchPokemon(name: String): Pokemon? {
         val pkmnsResult = searchEntity(apiService.value!!.request.pokemonByName(name))
         if (pkmnsResult.isNullOrEmpty())
             return null
-        var pkmn: Pokemon? = null
+        return convertResponseToPokemon(apiService.value!!.lastResponseApi!!)
+    }
+
+    fun getRandomPokemon(): Pokemon? {
+        val rndResult = searchEntity(apiService.value!!.request.getRndmPkmn())
+        if (rndResult.isNullOrEmpty())
+            return null
+        return convertResponseToPokemon(apiService.value!!.lastResponseApi!!)
+    }
+
+    fun convertResponseToPokemon(response: ApiService.ResponseApi): Pokemon? {
+        var pkmn : Pokemon? = null
+        if (response.success == null)
+            return null
+
         try{
-            pkmn = gson.fromJson(pkmnsResult, Pokemon::class.java)
+            pkmn = gson.fromJson(response.success!!.result, Pokemon::class.java)
             setPkmn(pkmn)
+            setStats(pkmn.stats)
+            getPkmnDesc(pkmn)
+            Log.d("SharedViewModel", "convertResponseToPokemon: ${descPkmn.value!!.flavor_text_entries[0]}")
+            Log.d("SharedViewModel", "convertResponseToPokemon: $pkmn")
         }catch (e: Exception){
             Log.e("SharedViewModel", "CONVERT TO GSON FAILED")
             Log.e("SharedViewModel", "searchPokemon: ${e.message}")
-            Log.e("SharedViewModel", "result string: $pkmnsResult")
+            Log.e("SharedViewModel", "result string: $response")
         }
-
         return pkmn
     }
 

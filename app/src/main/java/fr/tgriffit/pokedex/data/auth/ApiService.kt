@@ -3,10 +3,12 @@ package fr.tgriffit.pokedex.data.auth
 import android.util.Log
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import fr.tgriffit.pokedex.data.auth.ApiService.ResponseApi
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 class Request {
+    private val MAX_POKEMON_COUNT = 1025 //Last update: Oct. 07th 2024
     val POKEMONS = "pokemon"
     val POKEDEX_ENTRY = "pokemon-species"
 
@@ -32,6 +34,10 @@ class Request {
      */
     fun descPkmnFromPkdx(id: Int): String {
         return "$POKEDEX_ENTRY/$id"
+    }
+
+    fun getRndmPkmn(): String {
+        return pokemonById((1..MAX_POKEMON_COUNT).random())
     }
 }
 

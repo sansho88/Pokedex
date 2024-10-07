@@ -2,6 +2,7 @@ package fr.tgriffit.pokedex.ui.main
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,8 @@ import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import fr.tgriffit.pokedex.data.model.SharedViewModel
-import fr.tgriffit.pokedex.data.model.UserData
+import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
+import fr.tgriffit.pokedex.data.model.Stat
 import fr.tgriffit.pokedex.databinding.FragmentSkillsBinding
 
 
@@ -27,11 +28,11 @@ private const val ARG_PARAM2 = "param2"
  */
 class SkillsFragment : Fragment() {
 
-    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val sharedViewModel: PkmnSharedViewModel by activityViewModels()
     private var _binding: FragmentSkillsBinding? = null
     private lateinit var radarChart: RadarChart
 
-    private var skills: List<UserData.Skill>? = null
+    private var stats: List<Stat>? = null
 
     private val binding get() = _binding!!
 
@@ -44,16 +45,13 @@ class SkillsFragment : Fragment() {
         val root = binding.root
 
         radarChart = binding.radarChart
-        skills = sharedViewModel.currentCursus.value!!.skills
+        stats = sharedViewModel.stats.value!!
 
         setupRadarChart()
-        if (skills != null) setData(skills!!)
 
-        sharedViewModel.currentCursus.observe(viewLifecycleOwner) {
-            if (skills != null) {
-                setData(it.skills)
-                radarChart.notifyDataSetChanged()
-            }
+        sharedViewModel.stats.observe(viewLifecycleOwner) {
+            if (it != null)
+                setData(it)
         }
         return root
     }
@@ -68,32 +66,23 @@ class SkillsFragment : Fragment() {
         radarChart.y = 42f
     }
 
-    private fun setData(skillsList: List<UserData.Skill>) {
-        if (skillsList.isEmpty()) {
+    private fun setData(statsList: List<Stat>) {
+        if (statsList.isEmpty()) {
             radarChart.clear()
             return
         }
         val entries = ArrayList<RadarEntry>()
-        var longuestLen = 0
-        for (skill in skillsList) {
-            val entry = RadarEntry(skill.level.toFloat())
-            var skillName = skill.name
-            longuestLen = longuestLen.coerceAtLeast(skillName.length)
-            if (skillName.length > 22) {
-                skillName = skillName.substring(0, 22) + ".."
-                longuestLen = 22
-            }
-            entry.data = skillName
+
+        for (stat in statsList) {
+            val entry = RadarEntry(stat.base_stat.toFloat())
+            entry.data = stat.stat.name
+                .replace('-', ' ')
+                .replace("special", "spec.")
+                .replace("defense", "Def.")
+                .replace("attack", "Att.")
+                .replaceFirstChar { it.uppercase() }
             entry.icon = null
             entries.add(entry)
-        }
-        var sizeList = entries.size
-        while (sizeList < 3) {
-            val entry = RadarEntry(0f)
-            entry.data = ""
-            entry.icon = null
-            entries.add(entry)
-            ++sizeList
         }
 
         val dataSet = RadarDataSet(entries, "Skills")
@@ -107,15 +96,17 @@ class SkillsFragment : Fragment() {
         dataSet.valueTextColor = Color.GREEN
 
         val data = RadarData(dataSet)
-        data.setValueTextSize(14f)
+        data.setValueTextSize(24f)
         data.setDrawValues(true)
         data.setValueTextColor(Color.WHITE)
 
         radarChart.data = data
         radarChart.invalidate()
+        radarChart.webColorInner = Color.argb(50,50,50,150)
+        radarChart.skipWebLineCount = 1
 
         val xAxis = radarChart.xAxis
-        xAxis.textSize = 24f - (longuestLen / 2).toFloat()
+        xAxis.textSize = 24f
         xAxis.textColor = Color.WHITE
         xAxis.yOffset = 0f
         xAxis.xOffset = 0f
@@ -127,14 +118,18 @@ class SkillsFragment : Fragment() {
         }
 
         val yAxis = radarChart.yAxis
-        val highestLevel = skillsList.maxOf { it.level }
-        yAxis.setLabelCount(highestLevel.toInt(), false)
+        val highestStat = (statsList.maxOf { it.base_stat } * 1.2).toInt()
+        yAxis.setLabelCount(highestStat, false)
+
         yAxis.textSize = 9f
         yAxis.axisMinimum = 0f
-        yAxis.axisMaximum = highestLevel.toFloat()
+        yAxis.axisMaximum = highestStat.toFloat()
         yAxis.textColor = Color.WHITE
         yAxis.setDrawLabels(false)
 
+
+        //radarChart.notifyDataSetChanged()
+        Log.d("SkillsFragment", "setData: $statsList")
     }
 
     companion object {

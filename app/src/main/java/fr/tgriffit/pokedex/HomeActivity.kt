@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.allViews
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -30,6 +31,7 @@ import fr.tgriffit.pokedex.ui.main.ProjectFragment
 import fr.tgriffit.pokedex.ui.main.SectionsPagerAdapter
 import fr.tgriffit.pokedex.ui.main.SkillsFragment
 import fr.tgriffit.pokedex.ui.main.PokemonProfileFragment
+import okhttp3.internal.notify
 
 
 class HomeActivity : AppCompatActivity() {
@@ -47,6 +49,7 @@ class HomeActivity : AppCompatActivity() {
     private var pkmn: Pokemon? = null
     private var descPkmn: DescriptionPokemon? = null
     private lateinit var apiService: ApiService
+
     //todo: Update SHaredViewModel with PokemonData updated
     private val sharedViewModel: PkmnSharedViewModel by viewModels()
 
@@ -64,13 +67,16 @@ class HomeActivity : AppCompatActivity() {
 
         viewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
+        viewPager.isVisible = false
 
         tabs = binding.tabs
         tabs.setupWithViewPager(viewPager)
         tabs.setSelectedTabIndicatorColor(Color.parseColor("#2561B4"))
+        tabs.isVisible = false
 
 
         cursusSpinner = binding.spinner
+        cursusSpinner.isVisible = false
         cursusSpinner.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
         meButton = binding.meButton
         logoutButton = binding.logoutButton
@@ -79,31 +85,34 @@ class HomeActivity : AppCompatActivity() {
         apiService = ApiService()
         sharedViewModel.setApiService(apiService)
         sharedViewModel.apiService.observe(this, apiServiceObserver())
-        meButton.setOnClickListener {
-            Toast.makeText(this, "Fetching data...", Toast.LENGTH_SHORT).show()
-            val responseApi = sharedViewModel.apiService.value?.getAbout("me")
-            if (responseApi?.success != null)
-            {
-                sharedViewModel.setResult(responseApi.success!!.result)
-                val me = sharedViewModel.getPkmnFromResult()
-                if (me == null)
-                    Toast.makeText(this, "Timeout\nPlease, check your connexion", Toast.LENGTH_LONG).show()
-                else{
-                    searchView.setQuery(me.name, true)
-                    searchView.clearFocus()
-                    searchView.setQuery("", false)
-                }
+
+        sharedViewModel.pkmn.observe(this) { //en attendant d avoir une viw d accueil plus agreable ?
+            if (!viewPager.isVisible){
+                viewPager.isVisible = true
+                tabs.isVisible = true
+                cursusSpinner.isVisible = true
             }
         }
-        logoutButton.setOnClickListener {
 
+        meButton.setOnClickListener {
+            Toast.makeText(this, "Fetching data...", Toast.LENGTH_SHORT).show()
+            val rnd = sharedViewModel.getRandomPokemon()
+            if (rnd == null)
+                Toast.makeText(this, "Timeout\nPlease, check your connexion", Toast.LENGTH_LONG)
+                    .show()
+            else{
+                descPkmn = sharedViewModel.getPkmnDesc(rnd)
+                changeVersion(descPkmn!!.flavor_text_entries)
+            }
+        }
+
+        logoutButton.setOnClickListener {
             finish()
         }
 
         searchView = binding.searchUserSearchView
         var lastSearched = ""
         val searchEditText = searchView.allViews.find { view -> view is EditText } as EditText
-        //set maxLength of login
         searchEditText.filters = arrayOf<InputFilter>(LengthFilter(MAX_LOGIN_LEN))
         searchEditText.textSize = 22f
 
@@ -120,7 +129,10 @@ class HomeActivity : AppCompatActivity() {
                             "$query doesn't exist",
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.d("HomeActivity", "onQueryTextSubmit: ${sharedViewModel.apiService.value?.lastResponseApi?.failure?.message}")
+                        Log.d(
+                            "HomeActivity",
+                            "onQueryTextSubmit: ${sharedViewModel.apiService.value?.lastResponseApi?.failure?.message}"
+                        )
                         return false
                     }
                     sharedViewModel.setPkmn(pkmn!!)
@@ -135,7 +147,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) return false
 
-                if ( newText.length > MAX_LOGIN_LEN)
+                if (newText.length > MAX_LOGIN_LEN)
                     Toast.makeText(
                         this@HomeActivity,
                         "A pokemon's name can't be bigger",
@@ -156,8 +168,7 @@ class HomeActivity : AppCompatActivity() {
                     sharedViewModel.setPkmn(tmpPokemon)
                     pkmn = tmpPokemon
                     //changeVersion(sharedViewModel.getPkmnDesc(pkmn!!)!!.flavor_text_entries)
-                } else
-                {
+                } else {
                     Log.e("HomeActivity", "onCreate: tmpPokemon is null")
                 }
 
@@ -168,15 +179,22 @@ class HomeActivity : AppCompatActivity() {
         return observer
     }
 
+    override fun onStart() {
+        super.onStart()
+        sharedViewModel.apiService.observe(this, apiServiceObserver())
+        viewPager.isVisible = false
+
+    }
+
     private fun changeVersion(descList: List<FlavorTextEntry>) {
         val adapter = ArrayAdapter(
             this,
             R.layout.cursus_spinner_item,
             descList.map {
-                if ( it.language.name == "en")
+                if (it.language.name == "en")
                     it.version.name.replace("-", " ")
                 else null
-            }.filter{ !it.isNullOrBlank() }
+            }.filter { !it.isNullOrBlank() }
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         cursusSpinner.adapter = adapter
