@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import fr.tgriffit.pokedex.data.DescriptionPokemon
 import fr.tgriffit.pokedex.data.Pokemon
 import fr.tgriffit.pokedex.data.auth.ApiService
 import kotlinx.coroutines.launch
@@ -17,17 +18,19 @@ class PkmnSharedViewModel : ViewModel() {
     private val _searchQuery = MutableLiveData<String>()
     private val _result = MutableLiveData<String?>()
     private val _pkmn = MutableLiveData<Pokemon>()
+    private val _descPkmn = MutableLiveData<DescriptionPokemon>()
     private val _apiService = MutableLiveData<ApiService>()
     private val _index = MutableLiveData<Int>()
-   /* private val _currentCursus = MutableLiveData<PokemonData.CursusPokemon>()
-    private val _projectsList = MutableLiveData<List<PokemonData.ProjectsPokemons>>()*/
+    private val _version = MutableLiveData<Version>()
+   /* private val _projectsList = MutableLiveData<List<PokemonData.ProjectsPokemons>>()*/
     val searchQuery: LiveData<String> = _searchQuery
     val pkmn: LiveData<Pokemon?> = _pkmn
+    val descPkmn: LiveData<DescriptionPokemon?> = _descPkmn
     val result: LiveData<String?> = _result
     val apiService: LiveData<ApiService> = _apiService
     val index: LiveData<Int> = _index
-   /* val currentCursus: LiveData<PokemonData.CursusPokemon> = _currentCursus
-    val projectsList: LiveData<List<PokemonData.ProjectsPokemons>> = _projectsList*/
+    val version: LiveData<Version> = _version
+    /*val projectsList: LiveData<List<PokemonData.ProjectsPokemons>> = _projectsList*/
     
     fun setSearchQuery(query: String): PkmnSharedViewModel  {
         _searchQuery.postValue(query)
@@ -44,6 +47,11 @@ class PkmnSharedViewModel : ViewModel() {
         _pkmn.value = pkmn
         return this
     }
+    fun setDescPkmn(descPkmn: DescriptionPokemon): PkmnSharedViewModel {
+        _descPkmn.postValue(descPkmn)
+        _descPkmn.value = descPkmn
+        return this
+    }
     fun setApiService(apiService: ApiService): PkmnSharedViewModel {
         _apiService.postValue(apiService)
         return this
@@ -53,12 +61,12 @@ class PkmnSharedViewModel : ViewModel() {
         _index.postValue(index)
     }
 
-/*    fun setCurrentCursus(cursus: PokemonData.CursusPokemon): PkmnSharedViewModel {
-        _currentCursus.value = cursus
+   fun setVersion(version: Version): PkmnSharedViewModel {
+        _version.value = version
         return this
     }
     
-    fun setProjectsList(projectsList: List<PokemonData.ProjectsPokemons>): PkmnSharedViewModel {
+   /*  fun setProjectsList(projectsList: List<PokemonData.ProjectsPokemons>): PkmnSharedViewModel {
         _projectsList.value = projectsList
         return this
     }*/
@@ -105,22 +113,39 @@ class PkmnSharedViewModel : ViewModel() {
         return apiResult
     }
 
-    fun searchPokemon(name: String): Pokemon? {
-        this.setSearchQuery(apiService.value!!.request.pokemonByName(name))
+    fun searchEntity(request: String): String? {
+        this.setSearchQuery(request)
         this.performSearch()
-        val pkmnsResult = result.value
+        return result.value
+    }
+    fun searchPokemon(name: String): Pokemon? {
+        val pkmnsResult = searchEntity(apiService.value!!.request.pokemonByName(name))
         if (pkmnsResult.isNullOrEmpty())
             return null
+        var pkmn: Pokemon? = null
         try{
-            val pkmnResult = gson.fromJson(pkmnsResult, Pokemon::class.java)
-            this.setSearchQuery(apiService.value!!.request.pokemonById(pkmnResult.id))
-                .performSearch()
+            pkmn = gson.fromJson(pkmnsResult, Pokemon::class.java)
+            setPkmn(pkmn)
         }catch (e: Exception){
             Log.e("SharedViewModel", "CONVERT TO GSON FAILED")
             Log.e("SharedViewModel", "searchPokemon: ${e.message}")
             Log.e("SharedViewModel", "result string: $pkmnsResult")
         }
 
-        return getPkmnFromResult()
+        return pkmn
+    }
+
+    fun getPkmnDesc(pokemon: Pokemon): DescriptionPokemon? {
+        val descResult = searchEntity(apiService.value!!.request.descPkmnFromPkdx(pokemon.id))
+        if (descResult.isNullOrEmpty())
+            return null
+        var desc : DescriptionPokemon? = null
+        try {
+            desc = gson.fromJson(descResult, DescriptionPokemon::class.java)
+            setDescPkmn(desc)
+        }catch (e: Exception){
+            Log.e("SharedViewModel", "CONVERT TO GSON FAILED")
+        }
+        return desc
     }
 }

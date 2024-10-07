@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
+import fr.tgriffit.pokedex.data.DescriptionPokemon
 import fr.tgriffit.pokedex.data.Pokemon
 import fr.tgriffit.pokedex.data.auth.ApiService
 import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
@@ -56,6 +57,15 @@ class PokemonProfileFragment : Fragment() {
             if (it != null)
                 updatePokemonData(it)
         }
+
+        sharedViewModel.descPkmn.observe(viewLifecycleOwner) {
+            if (it != null)
+                updateDescription(it)
+        }
+
+        sharedViewModel.version.observe(viewLifecycleOwner){
+            updateDescription(sharedViewModel.descPkmn.value!!)
+        }
         initPokemonProfileUIElements()
         return root
     }
@@ -96,10 +106,6 @@ class PokemonProfileFragment : Fragment() {
 
         }
 
-        /*  sharedViewModel.currentCursus.observe(viewLifecycleOwner, Observer {
-              updatePokemonLevel(it.level)
-          })*/
-
     }
 
     private fun isValidSearch(login: String?, lastSearched: String): Boolean {
@@ -127,6 +133,17 @@ class PokemonProfileFragment : Fragment() {
             .load(avatarUrl)
             .into(pkmnAvatar)
 
+    }
+
+    private fun updateDescription(description: DescriptionPokemon){
+        val version = sharedViewModel.version.value
+        pkmnDesc.text = description.flavor_text_entries.find { flavor ->
+            flavor.language.name == "en" && flavor.version.name == version?.name
+        }?.flavor_text?.replace("\n", " ")
+
+        pkmnCategory.text = description.genera.find { genera ->
+            genera.language.name == "en"
+        }?.genus
     }
 
     private fun initPokemonProfileUIElements() {

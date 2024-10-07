@@ -49,7 +49,11 @@ data class FlavorTextEntry(
     val flavor_text: String,
     val language: Language,
     val version: Version
-)
+){
+    override fun toString(): String {
+        return "Version $version | language $language\nflavor_text: ${flavor_text}"
+    }
+}
 
 data class Language(
     val name: String,

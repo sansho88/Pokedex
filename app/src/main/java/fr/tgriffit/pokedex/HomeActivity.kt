@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
@@ -17,8 +20,10 @@ import androidx.core.view.allViews
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import fr.tgriffit.pokedex.data.DescriptionPokemon
 import fr.tgriffit.pokedex.data.Pokemon
 import fr.tgriffit.pokedex.data.auth.ApiService
+import fr.tgriffit.pokedex.data.model.FlavorTextEntry
 import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
 import fr.tgriffit.pokedex.databinding.ActivityHomeBinding
 import fr.tgriffit.pokedex.ui.main.ProjectFragment
@@ -40,6 +45,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var meButton: ImageButton
     private lateinit var logoutButton: ImageButton
     private var pkmn: Pokemon? = null
+    private var descPkmn: DescriptionPokemon? = null
     private lateinit var apiService: ApiService
     //todo: Update SHaredViewModel with PokemonData updated
     private val sharedViewModel: PkmnSharedViewModel by viewModels()
@@ -118,8 +124,9 @@ class HomeActivity : AppCompatActivity() {
                         return false
                     }
                     sharedViewModel.setPkmn(pkmn!!)
+                    descPkmn = sharedViewModel.getPkmnDesc(pkmn!!)
                     Log.d("HomeActivity", "pkmn variable= ${sharedViewModel.pkmn.value}")
-                    //changeProjectsList(pkmn!!.cursus_pkmns)
+                    changeVersion(descPkmn!!.flavor_text_entries)
                     searchView.clearFocus()
                 }
                 return true
@@ -131,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
                 if ( newText.length > MAX_LOGIN_LEN)
                     Toast.makeText(
                         this@HomeActivity,
-                        "A login can't be bigger",
+                        "A pokemon's name can't be bigger",
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -144,19 +151,11 @@ class HomeActivity : AppCompatActivity() {
     private fun apiServiceObserver(): Observer<ApiService> {
         val observer = Observer<ApiService> {
             try {
-               /* val me = sharedViewModel.apiService.value?.getAbout("me")
-                if (me?.success != null)
-                    sharedViewModel.setResult(me.success!!.result)
-                else {
-                    Toast.makeText(this, "Connection error", Toast.LENGTH_SHORT).show()
-
-                    finish()
-                }*/
                 val tmpPokemon = sharedViewModel.getPkmnFromResult()
                 if (tmpPokemon != null) {
                     sharedViewModel.setPkmn(tmpPokemon)
                     pkmn = tmpPokemon
-                    //changeProjectsList(sharedViewModel.pkmn.value!!.cursus_pkmns)
+                    //changeVersion(sharedViewModel.getPkmnDesc(pkmn!!)!!.flavor_text_entries)
                 } else
                 {
                     Log.e("HomeActivity", "onCreate: tmpPokemon is null")
@@ -169,11 +168,16 @@ class HomeActivity : AppCompatActivity() {
         return observer
     }
 
-    /*private fun changeProjectsList(cursusPokemonList: List<PokemonData.CursusPokemon>) {
+    private fun changeVersion(descList: List<FlavorTextEntry>) {
         val adapter = ArrayAdapter(
             this,
             R.layout.cursus_spinner_item,
-            cursusPokemonList.map { it.cursus.name })
+            descList.map {
+                if ( it.language.name == "en")
+                    it.version.name.replace("-", " ")
+                else null
+            }.filter{ !it.isNullOrBlank() }
+        )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         cursusSpinner.adapter = adapter
 
@@ -185,17 +189,11 @@ class HomeActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                sharedViewModel.setCurrentCursus(cursusPokemonList[position])
-                sharedViewModel.setProjectsList(
-                    sharedViewModel.pkmn.value!!.getProjectsPokemons().filter { project ->
-                        project.cursus_ids.find { id ->
-                            id == cursusPokemonList[position].cursus_id
-                        } != null
-                    })
+                sharedViewModel.setVersion(descList[position].version)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-    }*/
+    }
 
 }
