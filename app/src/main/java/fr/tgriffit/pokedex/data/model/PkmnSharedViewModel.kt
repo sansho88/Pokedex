@@ -11,6 +11,7 @@ import fr.tgriffit.pokedex.data.DescriptionPokemon
 import fr.tgriffit.pokedex.data.Pokemon
 import fr.tgriffit.pokedex.data.auth.ApiService
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
 class PkmnSharedViewModel : ViewModel() {
 
@@ -23,7 +24,7 @@ class PkmnSharedViewModel : ViewModel() {
     private val _index = MutableLiveData<Int>()
     private val _version = MutableLiveData<Version>()
     private val _stats = MutableLiveData<List<Stat>>()
-   /* private val _projectsList = MutableLiveData<List<PokemonData.ProjectsPokemons>>()*/
+    private val _skillsList = MutableLiveData<List<Move>>()
     val searchQuery: LiveData<String> = _searchQuery
     val pkmn: LiveData<Pokemon?> = _pkmn
     val descPkmn: LiveData<DescriptionPokemon?> = _descPkmn
@@ -32,7 +33,7 @@ class PkmnSharedViewModel : ViewModel() {
     val index: LiveData<Int> = _index
     val version: LiveData<Version> = _version
     val stats: LiveData<List<Stat>> = _stats
-    /*val projectsList: LiveData<List<PokemonData.ProjectsPokemons>> = _projectsList*/
+    val skillsList: LiveData<List<Move>> = _skillsList
     
     fun setSearchQuery(query: String): PkmnSharedViewModel  {
         _searchQuery.postValue(query)
@@ -73,11 +74,11 @@ class PkmnSharedViewModel : ViewModel() {
         _stats.value = stats
         return this
     }
-    
-   /*  fun setProjectsList(projectsList: List<PokemonData.ProjectsPokemons>): PkmnSharedViewModel {
-        _projectsList.value = projectsList
+
+    fun setSkillsList(skillsList: List<Move>): PkmnSharedViewModel {
+        _skillsList.value = skillsList
         return this
-    }*/
+    }
 
     /**
      * Get the pkmn from the result.
@@ -90,7 +91,6 @@ class PkmnSharedViewModel : ViewModel() {
             return null
         }
         try {
-            setPkmn(gson.fromJson(result.value, Pokemon::class.java))
             return pkmn.value
         } catch (e: JsonSyntaxException) {
             Log.e(
@@ -111,12 +111,16 @@ class PkmnSharedViewModel : ViewModel() {
             return ApiService.ResponseApi(-1, "apiService is null")
         }
         var apiResult : ApiService.ResponseApi?= ApiService.ResponseApi(-1, "Result not get yet")
-        viewModelScope.launch {
+        val search = viewModelScope.launch {
             apiResult = apiService.value?.getAbout(searchQuery.value)
             if (apiResult != null && apiResult!!.success != null)
                 setResult(apiResult!!.success!!.result)
             else
                 setResult(null)
+        }
+        when (search.isCompleted) {
+            true -> Log.d("SharedViewModel", "performSearch: search is completed")
+            false -> Log.d("SharedViewModel", "performSearch: search is not completed")
         }
         return apiResult
     }
@@ -138,25 +142,29 @@ class PkmnSharedViewModel : ViewModel() {
         val rndResult = searchEntity(apiService.value!!.request.getRndmPkmn())
         if (rndResult.isNullOrEmpty())
             return null
-        return convertResponseToPokemon(apiService.value!!.lastResponseApi!!)
+        val convertedResult = convertResponseToPokemon(apiService.value!!.lastResponseApi!!)
+        return convertedResult
     }
 
-    fun convertResponseToPokemon(response: ApiService.ResponseApi): Pokemon? {
+    fun updatePkmn(pkmn: Pokemon){
+        setPkmn(pkmn)
+        setStats(pkmn.stats)
+        setSkillsList(pkmn.moves)
+        setDescPkmn(getPkmnDesc(pkmn)!!)
+    }
+
+    private fun convertResponseToPokemon(response: ApiService.ResponseApi): Pokemon? {
         var pkmn : Pokemon? = null
         if (response.success == null)
             return null
 
         try{
             pkmn = gson.fromJson(response.success!!.result, Pokemon::class.java)
-            setPkmn(pkmn)
-            setStats(pkmn.stats)
-            getPkmnDesc(pkmn)
-            Log.d("SharedViewModel", "convertResponseToPokemon: ${descPkmn.value!!.flavor_text_entries[0]}")
             Log.d("SharedViewModel", "convertResponseToPokemon: $pkmn")
         }catch (e: Exception){
             Log.e("SharedViewModel", "CONVERT TO GSON FAILED")
             Log.e("SharedViewModel", "searchPokemon: ${e.message}")
-            Log.e("SharedViewModel", "result string: $response")
+            Log.e("SharedViewModel", "result string: ${response.failure?.code}")
         }
         return pkmn
     }
@@ -168,7 +176,6 @@ class PkmnSharedViewModel : ViewModel() {
         var desc : DescriptionPokemon? = null
         try {
             desc = gson.fromJson(descResult, DescriptionPokemon::class.java)
-            setDescPkmn(desc)
         }catch (e: Exception){
             Log.e("SharedViewModel", "CONVERT TO GSON FAILED")
         }

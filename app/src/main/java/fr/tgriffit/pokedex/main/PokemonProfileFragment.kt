@@ -20,6 +20,7 @@ import fr.tgriffit.pokedex.data.Pokemon
 import fr.tgriffit.pokedex.data.auth.ApiService
 import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
 import fr.tgriffit.pokedex.databinding.PokemonProfileBinding
+import okhttp3.internal.wait
 import java.util.Locale
 
 
@@ -27,7 +28,7 @@ private const val TAG = "PokemonProfileActivity"
 
 
 class PokemonProfileFragment : Fragment() {
-    private var pkmn: Pokemon? = null
+   // private lateinit var pkmn: Pokemon
 
     private lateinit var pkmnName: TextView
     private lateinit var pkmnId: TextView
@@ -52,10 +53,15 @@ class PokemonProfileFragment : Fragment() {
         }
         _binding = PokemonProfileBinding.inflate(inflater, container, false)
         val root = binding.root
+        initPokemonProfileUIElements()
 
         sharedViewModel.pkmn.observe(viewLifecycleOwner) {
             if (it != null)
+            {
                 updatePokemonData(it)
+                sharedViewModel.setDescPkmn(sharedViewModel.getPkmnDesc(it)!!)
+
+            }
         }
 
         sharedViewModel.descPkmn.observe(viewLifecycleOwner) {
@@ -66,65 +72,17 @@ class PokemonProfileFragment : Fragment() {
         sharedViewModel.version.observe(viewLifecycleOwner){
             updateDescription(sharedViewModel.descPkmn.value!!)
         }
-        initPokemonProfileUIElements()
+
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        try {
-            pkmn = sharedViewModel.pkmn.value
-            pkmn?.let { updatePokemonData(it) }
-            //pkmn?.cursus_pkmns?.first()?.level?.let { updatePokemonLevel(it) }
-
-        } catch (exception: Exception) {
-            Log.e(TAG, "onCreate: ApiService().getMe: ", exception)
-        }
-
-        var lastSearched = ""
-        //Detecte le changement de login dans la barre de recherche
-        sharedViewModel.searchQuery.observe(viewLifecycleOwner) { query ->
-            if (isValidSearch(query, lastSearched)) {
-                lastSearched = query
-                pkmn = sharedViewModel.pkmn.value
-                if (pkmn != null)
-                    binding.apply { updatePokemonData(pkmn!!) }
-                else {
-                    val snackbar =
-                        Snackbar.make(pkmnDesc, "$query not found", Snackbar.LENGTH_SHORT)
-                    snackbar.setTextColor(Color.WHITE)
-                    snackbar.setBackgroundTint(
-                        resources.getColor(
-                            android.R.color.holo_blue_dark,
-                            Resources.getSystem().newTheme()
-                        )
-                    )
-                    snackbar.show()
-                }
-            }
-
-        }
-
-    }
-
-    private fun isValidSearch(login: String?, lastSearched: String): Boolean {
-        if (login.isNullOrEmpty() || login.isBlank())
-            return false
-        if (pkmn != null && pkmn!!.name.equals(login, ignoreCase = true))
-            return false
-        if (lastSearched.equals(login, ignoreCase = true))
-            return false
-        return true
-    }
 
     @NonNull
-    private fun updatePokemonData(updatedPokemon: Pokemon? = pkmn) {
-        if (updatedPokemon == null)
-            return
+    private fun updatePokemonData(updatedPokemon: Pokemon) {
+
         pkmnName.text = updatedPokemon.name.uppercase()
         pkmnId.text = String.format(Locale.US, "N° %04d", updatedPokemon.id)
-        Log.d("PokemonProfileFragment", "updatePokemonData: $updatedPokemon")
+
         val types = "${updatedPokemon.types.get(0).type.name.uppercase()}${if (updatedPokemon.types.size > 1) " / ${updatedPokemon.types[1].type.name.uppercase()}" else ""}"
         pkmnType.text = String.format(Locale.US, "%s", types)
         pkmnHeight.text = String.format(Locale.US, "%.1f m",(updatedPokemon.height.toDouble() / 10))

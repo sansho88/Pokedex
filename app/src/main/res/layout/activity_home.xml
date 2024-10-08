@@ -50,7 +50,7 @@
                 app:iconifiedByDefault="false"
                 android:imeOptions="actionSearch"
                 android:inputType="textPersonName"
-                app:queryHint="Login"
+                app:queryHint="name"
                 android:focusable="true"
                 android:clickable="true"
 

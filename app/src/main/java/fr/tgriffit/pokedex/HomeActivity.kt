@@ -27,9 +27,9 @@ import fr.tgriffit.pokedex.data.auth.ApiService
 import fr.tgriffit.pokedex.data.model.FlavorTextEntry
 import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
 import fr.tgriffit.pokedex.databinding.ActivityHomeBinding
-import fr.tgriffit.pokedex.ui.main.ProjectFragment
-import fr.tgriffit.pokedex.ui.main.SectionsPagerAdapter
 import fr.tgriffit.pokedex.ui.main.SkillsFragment
+import fr.tgriffit.pokedex.ui.main.SectionsPagerAdapter
+import fr.tgriffit.pokedex.ui.main.StatsFragment
 import fr.tgriffit.pokedex.ui.main.PokemonProfileFragment
 import okhttp3.internal.notify
 
@@ -62,37 +62,26 @@ class HomeActivity : AppCompatActivity() {
 
         sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         sectionsPagerAdapter.addFragment(PokemonProfileFragment())
-        sectionsPagerAdapter.addFragment(ProjectFragment())
         sectionsPagerAdapter.addFragment(SkillsFragment())
+        sectionsPagerAdapter.addFragment(StatsFragment())
 
         viewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
-        viewPager.isVisible = false
 
         tabs = binding.tabs
         tabs.setupWithViewPager(viewPager)
         tabs.setSelectedTabIndicatorColor(Color.parseColor("#2561B4"))
-        tabs.isVisible = false
 
 
         cursusSpinner = binding.spinner
-        cursusSpinner.isVisible = false
         cursusSpinner.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
         meButton = binding.meButton
         logoutButton = binding.logoutButton
-
 
         apiService = ApiService()
         sharedViewModel.setApiService(apiService)
         sharedViewModel.apiService.observe(this, apiServiceObserver())
 
-        sharedViewModel.pkmn.observe(this) { //en attendant d avoir une viw d accueil plus agreable ?
-            if (!viewPager.isVisible){
-                viewPager.isVisible = true
-                tabs.isVisible = true
-                cursusSpinner.isVisible = true
-            }
-        }
 
         meButton.setOnClickListener {
             Toast.makeText(this, "Fetching data...", Toast.LENGTH_SHORT).show()
@@ -101,8 +90,8 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this, "Timeout\nPlease, check your connexion", Toast.LENGTH_LONG)
                     .show()
             else{
-                descPkmn = sharedViewModel.getPkmnDesc(rnd)
-                changeVersion(descPkmn!!.flavor_text_entries)
+                sharedViewModel.updatePkmn(rnd)
+                changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
             }
         }
 
@@ -119,7 +108,6 @@ class HomeActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty() && lastSearched != query) {
-                    Toast.makeText(this@HomeActivity, "Fetching data...", Toast.LENGTH_SHORT).show()
 
                     lastSearched = query
                     pkmn = sharedViewModel.searchPokemon(query)
@@ -129,16 +117,17 @@ class HomeActivity : AppCompatActivity() {
                             "$query doesn't exist",
                             Toast.LENGTH_SHORT
                         ).show()
+                        searchEditText.setTextColor(Color.RED)
                         Log.d(
                             "HomeActivity",
                             "onQueryTextSubmit: ${sharedViewModel.apiService.value?.lastResponseApi?.failure?.message}"
                         )
                         return false
                     }
-                    sharedViewModel.setPkmn(pkmn!!)
+                    sharedViewModel.updatePkmn(pkmn!!)
                     descPkmn = sharedViewModel.getPkmnDesc(pkmn!!)
-                    Log.d("HomeActivity", "pkmn variable= ${sharedViewModel.pkmn.value}")
-                    changeVersion(descPkmn!!.flavor_text_entries)
+                    changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
+                    searchEditText.text.clear()
                     searchView.clearFocus()
                 }
                 return true
@@ -146,6 +135,8 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) return false
+                if (searchEditText.currentTextColor == Color.RED)
+                    searchEditText.setTextColor(Color.WHITE)
 
                 if (newText.length > MAX_LOGIN_LEN)
                     Toast.makeText(
@@ -158,18 +149,26 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
+        sharedViewModel.updatePkmn(sharedViewModel.getRandomPokemon()!!)
+        changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
+        Log.d("HomeActivity", "onCreate: Pkmn already created ? ${sharedViewModel.pkmn.value}")
+
     }
 
     private fun apiServiceObserver(): Observer<ApiService> {
         val observer = Observer<ApiService> {
             try {
-                val tmpPokemon = sharedViewModel.getPkmnFromResult()
+                var tmpPokemon = sharedViewModel.getPkmnFromResult() ?: sharedViewModel.getRandomPokemon()
                 if (tmpPokemon != null) {
-                    sharedViewModel.setPkmn(tmpPokemon)
                     pkmn = tmpPokemon
-                    //changeVersion(sharedViewModel.getPkmnDesc(pkmn!!)!!.flavor_text_entries)
+                    descPkmn = sharedViewModel.getPkmnDesc(pkmn!!)
+                  changeVersion(descPkmn!!.flavor_text_entries)
+                      sharedViewModel.updatePkmn(pkmn!!)
                 } else {
                     Log.e("HomeActivity", "onCreate: tmpPokemon is null")
+                    tmpPokemon = sharedViewModel.getRandomPokemon()
+                    sharedViewModel.updatePkmn(tmpPokemon!!)
+                    pkmn = tmpPokemon
                 }
 
             } catch (e: Exception) {
@@ -177,13 +176,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         return observer
-    }
-
-    override fun onStart() {
-        super.onStart()
-        sharedViewModel.apiService.observe(this, apiServiceObserver())
-        viewPager.isVisible = false
-
     }
 
     private fun changeVersion(descList: List<FlavorTextEntry>) {
@@ -210,7 +202,9 @@ class HomeActivity : AppCompatActivity() {
                 sharedViewModel.setVersion(descList[position].version)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                sharedViewModel.setVersion(descList[0].version)
+            }
         }
     }
 

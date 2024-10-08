@@ -10,7 +10,7 @@ open class PokemonData(
     val weight: Int,
     val abilities: List<Ability>,
     val forms: List<Form>,
-    val gameIndices: List<GameIndex>,
+    val game_indices: List<GameIndex>,
     val heldItems: List<HeldItem>,
     val locationAreaEncounters: String,
     val moves: List<Move>,
@@ -22,7 +22,7 @@ open class PokemonData(
 )
 
 data class Ability(
-    val isHidden: Boolean,
+    val is_hidden: Boolean,
     val slot: Int,
     val ability: NamedApiResource
 )
@@ -33,13 +33,13 @@ data class Form(
 )
 
 data class GameIndex(
-    val gameIndex: Int,
+    val game_index: Int,
     val version: NamedApiResource
 )
 
 data class HeldItem(
     val item: NamedApiResource,
-    val versionDetails: List<VersionDetail>
+    val versionD_details: List<VersionDetail>
 )
 
 data class VersionDetail(
@@ -49,13 +49,13 @@ data class VersionDetail(
 
 data class Move(
     val move: NamedApiResource,
-    val versionGroupDetails: List<VersionGroupDetail>
+    val version_group_details: List<VersionGroupDetail>
 )
 
 data class VersionGroupDetail(
-    val levelLearnedAt: Int,
-    val versionGroup: NamedApiResource,
-    val moveLearnMethod: NamedApiResource
+    val level_learned_at: Int,
+    val version_group: NamedApiResource,
+    val move_learn_method: NamedApiResource
 )
 
 data class Species(
@@ -90,9 +90,9 @@ data class Sprites(
 }
 
 data class OtherSprites(
-    val dreamWorld: DreamWorldSprites,
+    val dream_world: DreamWorldSprites,
     val home: HomeSprites,
-    val officialArtwork: OfficialArtworkSprites
+    val official_artwork: OfficialArtworkSprites
 )
 
 data class DreamWorldSprites(

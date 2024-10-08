@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_42"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.main.ProjectFragment">
+    tools:context=".ui.main.SkillsFragment">
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/list"

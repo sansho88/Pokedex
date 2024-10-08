@@ -18,7 +18,7 @@
         >
 
         <TextView
-            android:id="@+id/project_score_txt"
+            android:id="@+id/learn_lvl_txt"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
@@ -32,7 +32,7 @@
             />
 
         <TextView
-            android:id="@+id/project_name_txt"
+            android:id="@+id/skill_name_txt"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
@@ -42,7 +42,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/project_score_txt"
+            app:layout_constraintStart_toEndOf="@id/learn_lvl_txt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.1"
@@ -50,15 +50,15 @@
             />
 
         <TextView
-            android:id="@+id/project_valid_date_txt"
+            android:id="@+id/learn_method_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:layout_marginBottom="100dp"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@android:color/background_light"
-            app:layout_constraintStart_toEndOf="@id/project_score_txt"
-            app:layout_constraintTop_toBottomOf="@id/project_name_txt"
+            app:layout_constraintStart_toEndOf="@id/learn_lvl_txt"
+            app:layout_constraintTop_toBottomOf="@id/skill_name_txt"
             app:layout_constraintBottom_toBottomOf="parent"
 
 

@@ -41,7 +41,7 @@ class Pokemon (
         weight = weight,
         abilities = abilities,
         forms = forms,
-        gameIndices = game_indices,
+        game_indices = game_indices,
         heldItems = held_items,
         locationAreaEncounters = location_area_encounters,
         moves = moves,
@@ -52,6 +52,12 @@ class Pokemon (
         pastTypes = past_types
 ){
     override fun toString(): String {
-        return "Pokemon: ${name} (id ${id})\nType: $types"
+        return "Pokemon(id=$id, name='$name', types=$types, base_experience=$baseExperience,\n" +
+                " height=$height," +
+                " is_default=$isDefault, order=$order, weight=$weight, abilities=$abilities,\n" +
+                " forms=$forms, game_indices=$game_indices, held_items=$heldItems,\n" +
+                " location_area_encounters='$locationAreaEncounters', moves=$moves,\n" +
+                " species=$species, sprites=$sprites, stats=$stats, \n" +
+                " past_types=$pastTypes)"
     }
 }
