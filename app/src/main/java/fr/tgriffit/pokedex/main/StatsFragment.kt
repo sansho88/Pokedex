@@ -45,7 +45,7 @@ class StatsFragment : Fragment() {
         val root = binding.root
 
         radarChart = binding.radarChart
-        stats = sharedViewModel.stats.value!!
+        stats = sharedViewModel.stats.value
 
         setupRadarChart()
 

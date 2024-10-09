@@ -44,34 +44,21 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_user_searchView"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
 
                 app:iconifiedByDefault="false"
                 android:imeOptions="actionSearch"
                 android:inputType="textPersonName"
                 app:queryHint="name"
-                android:focusable="true"
-                android:clickable="true"
 
 
-                android:layout_gravity="center"
                 app:queryBackground="@color/app_theme_secondary_color"
                 app:submitBackground="@android:color/holo_green_light"
                 android:layout_marginVertical="10dp"
-                />
-            <ImageButton
-                android:id="@+id/logout_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginHorizontal="16dp"
-                android:contentDescription="@string/logout_button_desc"
-                android:src="@drawable/ic_logout"
-                android:background="@android:color/transparent"
-                app:layout_constraintStart_toEndOf="@id/search_user_searchView"
-                app:layout_constraintBottom_toTopOf="@id/spinner"
-
                 />
 
 

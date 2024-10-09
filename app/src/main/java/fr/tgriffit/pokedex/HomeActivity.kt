@@ -41,8 +41,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var tabs: TabLayout
     private lateinit var searchView: SearchView
     private lateinit var versionSelector: Spinner
-    private lateinit var meButton: ImageButton
-    private lateinit var logoutButton: ImageButton
+    private lateinit var rndPkmnButton: ImageButton
     private var pkmn: Pokemon? = null
     private var descPkmn: DescriptionPokemon? = null
     private lateinit var apiService: ApiService
@@ -70,19 +69,19 @@ class HomeActivity : AppCompatActivity() {
         tabs.setSelectedTabIndicatorColor(resources.getColor(R.color.app_theme_tertiary_color, theme))
 
 
+
         versionSelector = binding.spinner
         versionSelector.textAlignment = View.TEXT_ALIGNMENT_CENTER
         versionSelector.gravity = View.TEXT_ALIGNMENT_CENTER
         //versionSelector.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-        meButton = binding.meButton
-        logoutButton = binding.logoutButton
+        rndPkmnButton = binding.meButton
 
         apiService = ApiService()
         sharedViewModel.setApiService(apiService)
         sharedViewModel.apiService.observe(this, apiServiceObserver())
 
 
-        meButton.setOnClickListener {
+        rndPkmnButton.setOnClickListener {
             Toast.makeText(this, "Fetching data...", Toast.LENGTH_SHORT).show()
             val rnd = sharedViewModel.getRandomPokemon()
             if (rnd == null)
@@ -92,10 +91,6 @@ class HomeActivity : AppCompatActivity() {
                 sharedViewModel.updatePkmn(rnd)
                 changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
             }
-        }
-
-        logoutButton.setOnClickListener {
-            finish()
         }
 
         searchView = binding.searchUserSearchView
@@ -123,9 +118,13 @@ class HomeActivity : AppCompatActivity() {
                         )
                         return false
                     }
-                    sharedViewModel.updatePkmn(pkmn!!)
-                    descPkmn = sharedViewModel.getPkmnDesc(pkmn!!)
-                    changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
+                    sharedViewModel.updatePkmn(pkmn)
+                    descPkmn = sharedViewModel.getPkmnDesc(pkmn)
+                    if (descPkmn != null){
+                        sharedViewModel.setDescPkmn(descPkmn!!)
+                        changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
+                    }
+
                     searchEditText.text.clear()
                     searchView.clearFocus()
                 }
@@ -148,9 +147,18 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
-        sharedViewModel.updatePkmn(sharedViewModel.getRandomPokemon()!!)
-        changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
-        Log.d("HomeActivity", "onCreate: Pkmn already created ? ${sharedViewModel.pkmn.value}")
+        val rndPkmn = sharedViewModel.getRandomPokemon()
+        if (rndPkmn == null)
+            Toast.makeText(this, "Timeout\nPlease, check your connexion", Toast.LENGTH_LONG)
+                .show()
+        else{
+            if (sharedViewModel.descPkmn.value != null)
+                changeVersion(sharedViewModel.descPkmn.value!!.flavor_text_entries)
+        }
+        sharedViewModel.updatePkmn(rndPkmn)
+
+        tabs.isClickable = false
+        versionSelector.isClickable = false
 
     }
 
@@ -159,14 +167,16 @@ class HomeActivity : AppCompatActivity() {
             try {
                 var tmpPokemon = sharedViewModel.getPkmnFromResult() ?: sharedViewModel.getRandomPokemon()
                 if (tmpPokemon != null) {
+                    tabs.isClickable = true
+                    versionSelector.isClickable = true
                     pkmn = tmpPokemon
                     descPkmn = sharedViewModel.getPkmnDesc(pkmn!!)
                   changeVersion(descPkmn!!.flavor_text_entries)
-                      sharedViewModel.updatePkmn(pkmn!!)
+                      sharedViewModel.updatePkmn(pkmn)
                 } else {
                     Log.e("HomeActivity", "onCreate: tmpPokemon is null")
                     tmpPokemon = sharedViewModel.getRandomPokemon()
-                    sharedViewModel.updatePkmn(tmpPokemon!!)
+                    sharedViewModel.updatePkmn(tmpPokemon)
                     pkmn = tmpPokemon
                 }
 

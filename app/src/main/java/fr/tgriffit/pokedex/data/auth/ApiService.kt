@@ -48,7 +48,7 @@ class ApiService() {
 
 
     private var TAG = "ApiService"
-    private val MAX_TIMEOUT = 42L
+    private val MAX_TIMEOUT = 6L
     private val requestPokeApiUrl = "https://pokeapi.co/api/v2/"
     val request = Request()
     var lastResponseApi: ResponseApi? = null
@@ -73,7 +73,7 @@ class ApiService() {
         return result
     }
 
-    var nbTries = 0
+
     private fun callApi(endPoint: String): ResponseApi {
         val fullUrl = requestPokeApiUrl + endPoint
 
@@ -84,7 +84,7 @@ class ApiService() {
 
             return when (result) {
                 is Result.Success -> {
-                    nbTries = 0
+
                     if (result.value == "[]")
                         ResponseApi(value = "")
                     else
@@ -104,14 +104,12 @@ class ApiService() {
         } catch (exception: Exception) {
             Log.e(TAG, "callApi: $exception")
         }
-        nbTries = 0
         return ResponseApi(code = -1, value = "Unknown error")
     }
 
     override fun toString(): String {
         return "ApiService(TAG='$TAG', requestApi42Url='$requestPokeApiUrl', request=$request)"
     }
-
 
     class ResponseApi(code: Int = 0, value: String) {
         var failure: Failure? = null
