@@ -1,127 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_42"
-    tools:context=".ui.main.PokemonProfileFragment">
+    android:background="@drawable/bg_pkmn"
+    >
 
-    <TextView
-        android:id="@+id/user_login_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/pkmn_name_text"
-        android:textColor="@color/white"
-        android:textSize="32sp"
-
-        app:layout_constraintEnd_toEndOf="@+id/pkmn_id_txtView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/pkmn_desc_txtView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pkmn_description_text"
-        android:textColor="@color/white"
-        android:textSize="@dimen/profile_data_text_size"
-        android:layout_marginHorizontal="36sp"
-        android:layout_marginVertical="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pkmn_category_text"
-        />
+
+        tools:context=".ui.main.PokemonProfileFragment">
+
+        <TextView
+            android:id="@+id/user_login_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/pkmn_name_text"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+
+            app:layout_constraintEnd_toEndOf="@+id/pkmn_id_txtView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pkmn_desc_txtView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="36sp"
+            android:layout_marginVertical="8dp"
+            android:text="@string/pkmn_description_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/profile_data_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pkmn_category_text" />
 
 
-    <TextView
-        android:id="@+id/pkmn_category_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pkmn_category_text"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/pkmn_avatar"
-        app:layout_constraintStart_toStartOf="@id/pkmn_avatar"
-        app:layout_constraintTop_toBottomOf="@id/pkmn_types_text" />
+        <TextView
+            android:id="@+id/pkmn_category_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pkmn_category_text"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/pkmn_avatar"
+            app:layout_constraintStart_toStartOf="@id/pkmn_avatar"
+            app:layout_constraintTop_toBottomOf="@id/pkmn_types_text" />
 
-    <TextView
-        android:id="@+id/pkmn_weight_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/weight"
-        android:textSize="20sp"
-        android:ellipsize="end"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@id/pkmn_height_text"
-        app:layout_constraintTop_toBottomOf="@id/pkmn_desc_txtView"
-        app:layout_constraintVertical_bias="0.02" />
-
-
-    <TextView
-        android:id="@+id/pkmn_height_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pkmn_height_text"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/pkmn_avatar"
-        app:layout_constraintTop_toBottomOf="@id/pkmn_desc_txtView"
-
-        app:layout_constraintVertical_bias="0.02" />
-
-    <TextView
-        android:id="@+id/pkmn_types_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/pkmn_types_text"
-        android:textColor="@color/white"
-        android:textSize="@dimen/profile_data_text_size"
-        android:layout_marginVertical="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pkmn_avatar"
-         />
+        <TextView
+            android:id="@+id/pkmn_weight_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/weight"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toEndOf="@id/pkmn_height_text"
+            app:layout_constraintTop_toBottomOf="@id/pkmn_desc_txtView"
+            app:layout_constraintVertical_bias="0.02" />
 
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/pkmn_avatar"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginVertical="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_login_text"
-        tools:srcCompat="@tools:sample/avatars"
-        android:src="@drawable/cat"
-        app:shapeAppearance="@style/RoundedSquare"
-        android:scaleType="centerCrop"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/profile_picture_desc"
+        <TextView
+            android:id="@+id/pkmn_height_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pkmn_height_text"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/pkmn_avatar"
+            app:layout_constraintTop_toBottomOf="@id/pkmn_desc_txtView"
 
-        />
+            app:layout_constraintVertical_bias="0.02" />
 
-    <TextView
-        android:id="@+id/pkmn_id_txtView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:text="@string/pkmn_id_text"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/user_login_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/user_login_text"
-        app:layout_constraintVertical_bias="0.49" />
+        <TextView
+            android:id="@+id/pkmn_types_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/pkmn_types_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/profile_data_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pkmn_avatar" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/pkmn_avatar"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginVertical="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/profile_picture_desc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_login_text"
+            app:shapeAppearance="@style/RoundedSquare"
+            tools:srcCompat="@tools:sample/avatars"
+
+            />
+
+        <TextView
+            android:id="@+id/pkmn_id_txtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:text="@string/pkmn_id_text"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/user_login_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/user_login_text"
+            app:layout_constraintVertical_bias="0.49" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

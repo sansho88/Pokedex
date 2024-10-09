@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_42"
+    android:background="@drawable/bg_pkmn"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.main.SkillsFragment">
 
@@ -12,12 +12,11 @@
     android:id="@+id/list"
     android:name="fr.tgriffit.swifty_companion.ui.main.ProjectFragment"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginBottom="32dp"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
     app:layout_constraintBottom_toBottomOf="parent"
     android:layout_gravity="bottom"
 
-    tools:listitem="@layout/fragment_project" />
+    tools:listitem="@layout/fragment_project_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

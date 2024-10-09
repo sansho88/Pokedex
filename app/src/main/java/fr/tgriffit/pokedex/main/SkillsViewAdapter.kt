@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.tgriffit.pokedex.R
 import fr.tgriffit.pokedex.data.model.Move
-import fr.tgriffit.pokedex.databinding.FragmentProjectBinding
+import fr.tgriffit.pokedex.databinding.FragmentProjectItemBinding
 
 /**
  * [RecyclerView.Adapter] that can display a [SkillsFragment].
@@ -19,7 +19,7 @@ class SkillsViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentProjectBinding.inflate(
+            FragmentProjectItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -36,7 +36,6 @@ class SkillsViewAdapter(
         val learnedAtLevel = item.version_group_details[0].level_learned_at
 
 
-        holder.learnMethodView.text = item.version_group_details[0].move_learn_method.name.replaceFirstChar { it.uppercase() }
         holder.learnLvlView.text = "Lvl $learnedAtLevel"
         val scoreColor = when {
             learnedAtLevel <= 20 -> R.color.light_green
@@ -56,15 +55,11 @@ class SkillsViewAdapter(
 
     override fun getItemCount(): Int = skillsList?.size ?: 0
 
-    inner class ViewHolder(binding: FragmentProjectBinding) :
+    inner class ViewHolder(binding: FragmentProjectItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val skillNameView: TextView = binding.skillNameTxt
-        val learnMethodView: TextView = binding.learnMethodTxt
         val learnLvlView: TextView = binding.learnLvlTxt
-        
-        override fun toString(): String {
-            return super.toString() + " '" + learnMethodView.text + "'"
-        }
+
     }
 
 }
