@@ -1,9 +1,11 @@
 package fr.tgriffit.pokedex.data.model
 
+import com.google.gson.annotations.SerializedName
+
 open class PokemonData(
     val id: Int,
     val name: String,
-    val baseExperience: Int,
+    val base_experience: Int,
     val height: Int,
     val isDefault: Boolean,
     val order: Int,
@@ -12,13 +14,13 @@ open class PokemonData(
     val forms: List<Form>,
     val game_indices: List<GameIndex>,
     val heldItems: List<HeldItem>,
-    val locationAreaEncounters: String,
+    val location_area_encounters: String,
     val moves: List<Move>,
     val species: Species,
     val sprites: Sprites,
     val stats: List<Stat>,
     val types: List<Type>,
-    val pastTypes: List<PastType>
+    val past_types: List<PastType>
 )
 
 data class Ability(
@@ -92,7 +94,8 @@ data class Sprites(
 data class OtherSprites(
     val dream_world: DreamWorldSprites,
     val home: HomeSprites,
-    val official_artwork: OfficialArtworkSprites
+    val official_artwork: OfficialArtworkSprites,
+    val showdown: ShowdownSprites
 )
 
 data class DreamWorldSprites(
@@ -112,34 +115,45 @@ data class OfficialArtworkSprites(
     val frontShiny: String?
 )
 
+data class ShowdownSprites(
+    val back_default: String?,
+    val back_female: String?,
+    val back_shiny: String?,
+    val back_shiny_female: String?,
+    val front_default: String?,
+    val front_female: String?,
+    val front_shiny: String?,
+    val front_shiny_female: String?
+)
+
 data class VersionSprites(
-    val generationI: GenerationISprites,
-    val generationIi: GenerationIiSprites,
-    val generationIii: GenerationIiiSprites,
-    val generationIv: GenerationIvSprites,
-    val generationV: GenerationVSprites,
-    val generationVi: GenerationViSprites,
-    val generationVii: GenerationViiSprites,
-    val generationViii: GenerationViiiSprites
+    @SerializedName("generation-i")     val generationI: GenerationISprites,
+    @SerializedName("generation-ii")    val generationii: GenerationIiSprites,
+    @SerializedName("generation-iii")   val generation_iii: GenerationIiiSprites,
+    @SerializedName("generation-iv")    val generation_iv: GenerationIvSprites,
+    @SerializedName("generation-v")     val generation_v: GenerationVSprites,
+    @SerializedName("generation-vi")    val generation_vi: GenerationViSprites,
+    @SerializedName("generation-vii")   val generation_vii: GenerationViiSprites,
+    @SerializedName("generation-viii")  val generation_viii: GenerationViiiSprites
 )
 
 data class GenerationISprites(
-    val redBlue: RedBlueSprites,
+    @SerializedName("red-blue")    val red_blue: RedBlueSprites,
     val yellow: YellowSprites
 )
 
 data class RedBlueSprites(
-    val backDefault: String?,
-    val backGray: String?,
-    val frontDefault: String?,
-    val frontGray: String?
+    val back_default: String?,
+    val back_gray: String?,
+    val front_default: String?,
+    val front_gray: String?
 )
 
 data class YellowSprites(
-    val backDefault: String?,
-    val backGray: String?,
-    val frontDefault: String?,
-    val frontGray: String?
+    val back_default: String?,
+    val back_gray: String?,
+    val front_default: String?,
+    val front_gray: String?
 )
 
 data class GenerationIiSprites(
@@ -149,151 +163,151 @@ data class GenerationIiSprites(
 )
 
 data class CrystalSprites(
-    val backDefault: String?,
-    val backShiny: String?,
-    val frontDefault: String?,
-    val frontShiny: String?
+    val back_default: String?,
+    val back_shiny: String?,
+    val front_default: String?,
+    val front_shiny: String?
 )
 
 data class GoldSprites(
-    val backDefault: String?,
-    val backShiny: String?,
-    val frontDefault: String?,
-    val frontShiny: String?
+    val back_default: String?,
+    val back_shiny: String?,
+    val front_default: String?,
+    val front_shiny: String?
 )
 
 data class SilverSprites(
-    val backDefault: String?,
-    val backShiny: String?,
-    val frontDefault: String?,
-    val frontShiny: String?
+    val back_default: String?,
+    val back_shiny: String?,
+    val front_default: String?,
+    val front_shiny: String?
 )
 
 data class GenerationIiiSprites(
     val emerald: EmeraldSprites,
-    val fireredLeafgreen: FireredLeafgreenSprites,
-    val rubySapphire: RubySapphireSprites
+    @SerializedName("firered-leafgreen") val firered_leafgreen: FireredLeafgreenSprites,
+    @SerializedName("ruby-sapphire") val ruby_sapphire: RubySapphireSprites
 )
 
 data class EmeraldSprites(
-    val frontDefault: String?,
-    val frontShiny: String?
+    val front_default: String?,
+    val front_shiny: String?
 )
 
 data class FireredLeafgreenSprites(
-    val backDefault: String?,
-    val backShiny: String?,
-    val frontDefault: String?,
-    val frontShiny: String?
+    val back_default: String?,
+    val back_shiny: String?,
+    val front_default: String?,
+    val front_shiny: String?
 )
 
 data class RubySapphireSprites(
-    val backDefault: String?,
-    val backShiny: String?,
-    val frontDefault: String?,
-    val frontShiny: String?
+    val back_default: String?,
+    val back_shiny: String?,
+    val front_default: String?,
+    val front_shiny: String?
 )
 
 data class GenerationIvSprites(
-    val diamondPearl: DiamondPearlSprites,
-    val heartgoldSoulsilver: HeartgoldSoulsilverSprites,
+    @SerializedName("diamond-pearl") val diamond_pearl: DiamondPearlSprites,
+    @SerializedName("heartgold-soulsilver") val heartgold_soulsilver: HeartgoldSoulsilverSprites,
     val platinum: PlatinumSprites
 )
 
 data class DiamondPearlSprites(
-    val backDefault: String?,
+    val back_default: String?,
     val backFemale: String?,
-    val backShiny: String?,
-    val backShinyFemale: String?,
-    val frontDefault: String?,
+    val back_shiny: String?,
+    val back_shinyFemale: String?,
+    val front_default: String?,
     val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_shiny: String?,
+    val front_shinyFemale: String?
 )
 
 data class HeartgoldSoulsilverSprites(
-    val backDefault: String?,
+    val back_default: String?,
     val backFemale: String?,
-    val backShiny: String?,
-    val backShinyFemale: String?,
-    val frontDefault: String?,
+    val back_shiny: String?,
+    val back_shinyFemale: String?,
+    val front_default: String?,
     val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_shiny: String?,
+    val front_shinyFemale: String?
 )
 
 data class PlatinumSprites(
-    val backDefault: String?,
+    val back_default: String?,
     val backFemale: String?,
-    val backShiny: String?,
-    val backShinyFemale: String?,
-    val frontDefault: String?,
+    val back_shiny: String?,
+    val back_shinyFemale: String?,
+    val front_default: String?,
     val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_shiny: String?,
+    val front_shinyFemale: String?
 )
 
 data class GenerationVSprites(
-    val blackWhite: BlackWhiteSprites
+    @SerializedName("black-white") val black_white: BlackWhiteSprites
 )
 
 data class BlackWhiteSprites(
     val animated: AnimatedSprites,
-    val backDefault: String?,
+    val back_default: String?,
     val backFemale: String?,
-    val backShiny: String?,
-    val backShinyFemale: String?,
-    val frontDefault: String?,
+    val back_shiny: String?,
+    val back_shinyFemale: String?,
+    val front_default: String?,
     val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_shiny: String?,
+    val front_shinyFemale: String?
 )
 
 data class AnimatedSprites(
-    val backDefault: String?,
+    val back_default: String?,
     val backFemale: String?,
-    val backShiny: String?,
-    val backShinyFemale: String?,
-    val frontDefault: String?,
+    val back_shiny: String?,
+    val back_shinyFemale: String?,
+    val front_default: String?,
     val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_shiny: String?,
+    val front_shinyFemale: String?
 )
 
 data class GenerationViSprites(
-    val omegarubyAlphasapphire: OmegarubyAlphasapphireSprites,
-    val xY: XYSprites
+    @SerializedName("omegaruby-alphasapphire")  val omegaruby_alphasapphire: OmegarubyAlphasapphireSprites,
+    @SerializedName("x-y")                      val xY: XYSprites
 )
 
 data class OmegarubyAlphasapphireSprites(
-    val frontDefault: String?,
-    val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_default: String?,
+    val front_female: String?,
+    val front_shiny: String?,
+    val front_shiny_female: String?
 )
 
 data class XYSprites(
-    val frontDefault: String?,
-    val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_default: String?,
+    val front_female: String?,
+    val front_shiny: String?,
+    val front_shiny_female: String?
 )
 
 data class GenerationViiSprites(
     val icons: IconSprites,
-    val ultraSunUltraMoon: UltraSunUltraMoonSprites
+    @SerializedName("ultra-sun-ultra-moon") val ultra_sun_ultra_moon: UltraSunUltraMoonSprites
 )
 
 data class IconSprites(
-    val frontDefault: String?,
-    val frontFemale: String?
+    val front_default: String?,
+    val front_female: String?
 )
 
 data class UltraSunUltraMoonSprites(
-    val frontDefault: String?,
-    val frontFemale: String?,
-    val frontShiny: String?,
-    val frontShinyFemale: String?
+    val front_default: String?,
+    val front_female: String?,
+    val front_shiny: String?,
+    val front_shiny_female: String?
 )
 
 data class GenerationViiiSprites(

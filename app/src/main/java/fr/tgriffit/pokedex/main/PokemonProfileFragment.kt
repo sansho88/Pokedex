@@ -1,10 +1,7 @@
 package fr.tgriffit.pokedex.ui.main
 
-import android.content.res.Resources
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.snackbar.Snackbar
 import fr.tgriffit.pokedex.data.DescriptionPokemon
 import fr.tgriffit.pokedex.data.Pokemon
 import fr.tgriffit.pokedex.data.auth.ApiService
 import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
 import fr.tgriffit.pokedex.databinding.PokemonProfileBinding
-import okhttp3.internal.wait
 import java.util.Locale
 
 
@@ -38,6 +33,7 @@ class PokemonProfileFragment : Fragment() {
     private lateinit var pkmnHeight: TextView
     private lateinit var pkmnType: TextView
     private lateinit var pkmnAvatar: ShapeableImageView
+    private lateinit var avatarUrl: String
     private var _binding: PokemonProfileBinding? = null
 
     private val binding get() = _binding!!
@@ -69,8 +65,50 @@ class PokemonProfileFragment : Fragment() {
                 updateDescription(it)
         }
 
-        sharedViewModel.version.observe(viewLifecycleOwner){
+        sharedViewModel.version.observe(viewLifecycleOwner){ version ->
             updateDescription(sharedViewModel.descPkmn.value!!)
+            updateAvatar(sharedViewModel.pkmn.value!!.sprites.versions.let{ spriteVersion ->
+                when(version.name){
+                    "yellow" -> spriteVersion.generationI.yellow.front_default
+                    "red" -> spriteVersion.generationI.red_blue.front_default
+                    "blue" -> spriteVersion.generationI.red_blue.front_default
+                    "gold" -> spriteVersion.generationii.gold.front_default
+                    "silver" -> spriteVersion.generationii.silver.front_default
+                    "crystal" -> spriteVersion.generation_iii.emerald.front_default
+                    "firered" -> spriteVersion.generation_iii.firered_leafgreen.front_default
+                    "leafgreen" -> spriteVersion.generation_iii.firered_leafgreen.front_default
+                    "ruby" -> spriteVersion.generation_iii.ruby_sapphire.front_default
+                    "sapphire" -> spriteVersion.generation_iii.ruby_sapphire.front_default
+                    "diamond" -> spriteVersion.generation_iv.diamond_pearl.front_default
+                    "pearl" -> spriteVersion.generation_iv.diamond_pearl.front_default
+                    "platinum" -> spriteVersion.generation_iv.platinum.front_default
+                    "heartgold" -> spriteVersion.generation_iv.heartgold_soulsilver.front_default
+                    "soulsilver" -> spriteVersion.generation_iv.heartgold_soulsilver.front_default
+                    "black" -> spriteVersion.generation_v.black_white.front_default
+                    "white" -> spriteVersion.generation_v.black_white.front_default
+                    "black-2" -> spriteVersion.generation_v.black_white.front_default
+                    "white-2" -> spriteVersion.generation_v.black_white.front_default
+                    "x" -> spriteVersion.generation_vi.xY.front_default
+                    "y" -> spriteVersion.generation_vi.xY.front_default
+                    "omega-ruby" -> spriteVersion.generation_vi.omegaruby_alphasapphire.front_default
+                    "alpha-sapphire" -> spriteVersion.generation_vi.omegaruby_alphasapphire.front_default
+                    "sun" -> spriteVersion.generation_vii.ultra_sun_ultra_moon.front_default
+                    "moon" -> spriteVersion.generation_vii.ultra_sun_ultra_moon.front_default
+                    "ultra-sun" -> spriteVersion.generation_vi.xY.front_default
+                    "ultra-moon" -> spriteVersion.generation_vi.xY.front_default
+                    "sword" -> sharedViewModel.pkmn.value!!.sprites.other.showdown.front_default
+                    "shield" -> sharedViewModel.pkmn.value!!.sprites.other.showdown.front_default
+                    "lets-go" -> sharedViewModel.pkmn.value!!.sprites.other.showdown.front_default
+                    "lets-go-pikachu" -> sharedViewModel.pkmn.value!!.sprites.other.showdown.front_default
+                    "lets-go-eevee" -> sharedViewModel.pkmn.value!!.sprites.other.showdown.front_default
+                    "sword-shield" -> sharedViewModel.pkmn.value!!.sprites.other.showdown.front_default
+                    "legends-arceus" -> sharedViewModel.pkmn.value!!.sprites.other.showdown.front_default
+
+                    else -> {
+                        sharedViewModel.pkmn.value!!.sprites.front_default
+                    }
+                }
+            }.toString())
         }
 
         return root
@@ -88,11 +126,8 @@ class PokemonProfileFragment : Fragment() {
         pkmnHeight.text = String.format(Locale.US, "%.1f m",(updatedPokemon.height.toDouble() / 10))
         pkmnWeight.text = String.format(Locale.US, "%.1f kg",(updatedPokemon.weight.toDouble() / 10))
 
-        val avatarUrl = updatedPokemon.sprites.front_default ?: Uri.parse("android.resource://fr.tgriffit.pokedex/drawable/cat").toString()
-
-        Glide.with(this)
-            .load(avatarUrl)
-            .into(pkmnAvatar)
+        avatarUrl = updatedPokemon.sprites.front_default ?: Uri.parse("android.resource://fr.tgriffit.pokedex/drawable/cat").toString()
+        updateAvatar(avatarUrl)
 
     }
 
@@ -105,6 +140,15 @@ class PokemonProfileFragment : Fragment() {
         pkmnCategory.text = description.genera.find { genera ->
             genera.language.name == "en"
         }?.genus
+    }
+
+    private fun updateAvatar(url: String?) {
+        if (url == null || url == avatarUrl)
+            return
+        Glide.with(this)
+            .load(url)
+            .centerInside()
+            .into(pkmnAvatar)
     }
 
     private fun initPokemonProfileUIElements() {

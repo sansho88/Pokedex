@@ -179,14 +179,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun changeVersion(descList: List<FlavorTextEntry>) {
+        val filteredList = descList.filter { it.language.name == "en" }
+        val namesList = filteredList.map { it.version.name.replace("-", " ") }
+
         val adapter = ArrayAdapter(
             this,
             R.layout.cursus_spinner_item,
-            descList.map {
-                if (it.language.name == "en")
-                    it.version.name.replace("-", " ")
-                else null
-            }.filter { !it.isNullOrBlank() }
+            namesList
+
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         cursusSpinner.adapter = adapter
@@ -199,7 +199,7 @@ class HomeActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                sharedViewModel.setVersion(descList[position].version)
+                sharedViewModel.setVersion(filteredList[position].version)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
