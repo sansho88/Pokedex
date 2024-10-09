@@ -1,6 +1,5 @@
 package fr.tgriffit.pokedex
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputFilter
@@ -17,7 +16,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.allViews
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -31,7 +29,6 @@ import fr.tgriffit.pokedex.ui.main.SkillsFragment
 import fr.tgriffit.pokedex.ui.main.SectionsPagerAdapter
 import fr.tgriffit.pokedex.ui.main.StatsFragment
 import fr.tgriffit.pokedex.ui.main.PokemonProfileFragment
-import okhttp3.internal.notify
 
 
 class HomeActivity : AppCompatActivity() {
@@ -43,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager
     private lateinit var tabs: TabLayout
     private lateinit var searchView: SearchView
-    private lateinit var cursusSpinner: Spinner
+    private lateinit var versionSelector: Spinner
     private lateinit var meButton: ImageButton
     private lateinit var logoutButton: ImageButton
     private var pkmn: Pokemon? = null
@@ -70,11 +67,13 @@ class HomeActivity : AppCompatActivity() {
 
         tabs = binding.tabs
         tabs.setupWithViewPager(viewPager)
-        tabs.setSelectedTabIndicatorColor(Color.parseColor("#2561B4"))
+        tabs.setSelectedTabIndicatorColor(resources.getColor(R.color.app_theme_tertiary_color, theme))
 
 
-        cursusSpinner = binding.spinner
-        cursusSpinner.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+        versionSelector = binding.spinner
+        versionSelector.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        versionSelector.gravity = View.TEXT_ALIGNMENT_CENTER
+        //versionSelector.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
         meButton = binding.meButton
         logoutButton = binding.logoutButton
 
@@ -189,10 +188,10 @@ class HomeActivity : AppCompatActivity() {
 
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        cursusSpinner.adapter = adapter
+        versionSelector.adapter = adapter
 
 
-        cursusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        versionSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,

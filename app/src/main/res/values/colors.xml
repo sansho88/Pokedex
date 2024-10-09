@@ -11,8 +11,9 @@
     <color name="red">#FA3D3D</color>
     <color name="trans_red">#36FA3D3D</color>
     <color name="dark_green">#80013806</color>
-    <color name="cardview_background_color">#6638388B</color>
-    <color name="searchbar_input_background_color">#332488CB</color>
+    <color name="app_theme_main_color">#66FF0000</color>
+    <color name="app_theme_secondary_color">#33000000</color>
+    <color name="app_theme_tertiary_color">#B9FBFBFB</color>
     <color name="orange">#FFC107</color>
     <color name="trans_orange">#36FFC107</color>
 </resources>

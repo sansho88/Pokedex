@@ -26,16 +26,16 @@
             app:contentPadding="2dp"
             app:cardElevation="4dp"
             app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="@color/cardview_background_color">
+            app:cardBackgroundColor="@color/app_theme_main_color">
 
             <ImageButton
                 android:id="@+id/me_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_vertical|start"
-                android:layout_marginHorizontal="32dp"
+                android:layout_marginHorizontal="28dp"
                 android:contentDescription="@string/logout_button_desc"
-                android:src="@drawable/baseline_person_2_24"
+                android:src="@drawable/dice"
                 android:background="@android:color/transparent"
                 app:layout_constraintStart_toEndOf="@id/search_user_searchView"
                 app:layout_constraintBottom_toTopOf="@id/spinner"
@@ -56,7 +56,7 @@
 
 
                 android:layout_gravity="center"
-                app:queryBackground="@color/searchbar_input_background_color"
+                app:queryBackground="@color/app_theme_secondary_color"
                 app:submitBackground="@android:color/holo_green_light"
                 android:layout_marginVertical="10dp"
                 />
@@ -87,7 +87,7 @@
             android:spinnerMode="dropdown"
             android:layout_marginVertical="16dp"
             android:layout_marginHorizontal="16dp"
-
+            android:background="#4F4E0101"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_user_searchView"/>
 
@@ -96,9 +96,9 @@
             android:contentDescription="@string/tabs_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="@color/white"
+            app:tabTextColor="@color/app_theme_tertiary_color"
             android:background="@android:color/black"
-            app:tabBackground="@color/blue_ben_darker" />
+            app:tabBackground="@color/app_theme_main_color" />
 
 
     </com.google.android.material.appbar.AppBarLayout>

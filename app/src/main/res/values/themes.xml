@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Swifty_companion" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/searchbar_input_background_color</item>
-        <item name="colorSecondary">@color/cardview_background_color</item>
-        <item name="colorTertiary">@color/white</item>
+        <item name="colorPrimary">@color/app_theme_main_color</item>
+        <item name="colorSecondary">@color/app_theme_secondary_color</item>
+        <item name="colorTertiary">@android:color/holo_red_light</item>
     </style>
 
     <style name="Theme.Pokedex" parent="Base.Theme.Swifty_companion" />
