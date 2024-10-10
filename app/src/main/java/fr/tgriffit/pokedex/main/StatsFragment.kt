@@ -2,7 +2,6 @@ package fr.tgriffit.pokedex.ui.main
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,7 +62,6 @@ class StatsFragment : Fragment() {
         radarChart.webLineWidthInner = 1f
         radarChart.webColorInner = Color.LTGRAY
         radarChart.webAlpha = 100
-        radarChart.y = 42f
     }
 
     private fun setData(statsList: List<Stat>) {
