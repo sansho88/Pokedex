@@ -15,22 +15,13 @@
         <activity
             android:name="fr.tgriffit.pokedex.HomeActivity"
             android:exported="true"
-            android:label="@string/title_activity_home"
             android:theme="@style/Theme.Pokedex.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-
-
-                <data
-                    android:host="callback"
-                    android:scheme="pokedex" />
             </intent-filter>
-
         </activity>
-
-
     </application>
 
 </manifest>
