@@ -193,7 +193,7 @@ class HomeActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(
             this,
-            R.layout.cursus_spinner_item,
+            R.layout.version_spinner_item,
             namesList
 
         )

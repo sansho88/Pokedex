@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
-import fr.tgriffit.pokedex.databinding.FragmentProjectListBinding
+import fr.tgriffit.pokedex.databinding.FragmentSkillsListBinding
 import fr.tgriffit.pokedex.main.SkillsViewAdapter
 import fr.tgriffit.pokedex.ui.main.PokemonProfileFragment.Companion.ARG_SECTION_NUMBER
 
@@ -24,7 +24,7 @@ class SkillsFragment : Fragment() {
     private lateinit var adapter: SkillsViewAdapter
     private lateinit var recyclerView: RecyclerView
     private val sharedViewModel: PkmnSharedViewModel by activityViewModels()
-    private var _binding: FragmentProjectListBinding? = null
+    private var _binding: FragmentSkillsListBinding? = null
 
     private val binding get() = _binding!!
 
@@ -43,7 +43,7 @@ class SkillsFragment : Fragment() {
         sharedViewModel.apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 2)
         }
-        _binding = FragmentProjectListBinding.inflate(inflater, container, false)
+        _binding = FragmentSkillsListBinding.inflate(inflater, container, false)
         val root = binding.root
 
         recyclerView = binding.list

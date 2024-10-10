@@ -12,9 +12,10 @@ import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import fr.tgriffit.pokedex.R
 import fr.tgriffit.pokedex.data.model.PkmnSharedViewModel
 import fr.tgriffit.pokedex.data.model.Stat
-import fr.tgriffit.pokedex.databinding.FragmentSkillsBinding
+import fr.tgriffit.pokedex.databinding.FragmentStatsBinding
 
 
 private const val ARG_PARAM1 = "param1"
@@ -28,7 +29,7 @@ private const val ARG_PARAM2 = "param2"
 class StatsFragment : Fragment() {
 
     private val sharedViewModel: PkmnSharedViewModel by activityViewModels()
-    private var _binding: FragmentSkillsBinding? = null
+    private var _binding: FragmentStatsBinding? = null
     private lateinit var radarChart: RadarChart
 
     private var stats: List<Stat>? = null
@@ -40,7 +41,7 @@ class StatsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentSkillsBinding.inflate(inflater, container, false)
+        _binding = FragmentStatsBinding.inflate(inflater, container, false)
         val root = binding.root
 
         radarChart = binding.radarChart
@@ -83,15 +84,23 @@ class StatsFragment : Fragment() {
             entries.add(entry)
         }
 
-        val dataSet = RadarDataSet(entries, "Skills")
-        dataSet.color = Color.rgb(103, 110, 129)
-        dataSet.fillColor = Color.parseColor("#ff0099cc")
+        val dataSet = RadarDataSet(entries, "")
+        dataSet.setGradientColor(Color.MAGENTA, Color.CYAN)
+
+        dataSet.fillColor = resources.getColor(R.color.app_theme_tertiary_color, null)
         dataSet.setDrawFilled(true)
-        dataSet.fillAlpha = 180
-        dataSet.lineWidth = 2f
+        dataSet.fillAlpha = 140
+        dataSet.lineWidth = 1f
         dataSet.isDrawHighlightCircleEnabled = true
         dataSet.setDrawHighlightIndicators(false)
-        dataSet.valueTextColor = Color.GREEN
+        dataSet.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return value.toInt().toString()
+            }
+        }
+        dataSet.color = Color.LTGRAY
+        dataSet.label = null
+
 
         val data = RadarData(dataSet)
         data.setValueTextSize(24f)

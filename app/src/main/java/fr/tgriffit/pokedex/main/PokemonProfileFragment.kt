@@ -27,8 +27,6 @@ private const val TAG = "PokemonProfileActivity"
 
 
 class PokemonProfileFragment : Fragment() {
-    // private lateinit var pkmn: Pokemon
-
     private lateinit var pkmnName: TextView
     private lateinit var pkmnId: TextView
     private lateinit var pkmnDesc: TextView
@@ -103,7 +101,6 @@ class PokemonProfileFragment : Fragment() {
             String.format(Locale.US, "%.1f kg", (updatedPokemon.weight.toDouble() / 10))
 
         avatarUrl = updatedPokemon.sprites.front_default
-            //?: Uri.parse("android.resource://fr.tgriffit.pokedex/drawable/cat").toString()
         updateAvatar(avatarUrl)
 
     }

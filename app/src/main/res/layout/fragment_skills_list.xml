@@ -18,5 +18,5 @@
     app:layout_constraintBottom_toBottomOf="parent"
     android:layout_gravity="bottom"
 
-    tools:listitem="@layout/fragment_project_item" />
+    tools:listitem="@layout/fragment_skill_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

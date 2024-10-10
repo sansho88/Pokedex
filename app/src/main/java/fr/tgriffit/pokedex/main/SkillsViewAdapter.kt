@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.tgriffit.pokedex.R
 import fr.tgriffit.pokedex.data.model.Move
-import fr.tgriffit.pokedex.databinding.FragmentProjectItemBinding
+import fr.tgriffit.pokedex.databinding.FragmentSkillItemBinding
 
 /**
  * [RecyclerView.Adapter] that can display a [SkillsFragment].
@@ -19,7 +19,7 @@ class SkillsViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentProjectItemBinding.inflate(
+            FragmentSkillItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -55,7 +55,7 @@ class SkillsViewAdapter(
 
     override fun getItemCount(): Int = skillsList?.size ?: 0
 
-    inner class ViewHolder(binding: FragmentProjectItemBinding) :
+    inner class ViewHolder(binding: FragmentSkillItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val skillNameView: TextView = binding.skillNameTxt
         val learnLvlView: TextView = binding.learnLvlTxt
