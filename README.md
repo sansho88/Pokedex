@@ -8,6 +8,9 @@ A simple Android Pokedex application built with Kotlin.
 - Doesn't want to type ? Test your luck with the random button
 - View all the informations about the Pokémon, including type, stats, and skills.
 - Switch between all the game versions where this pokemon is available
+  
+![pokedex_app](https://github.com/user-attachments/assets/f151916c-4639-4116-81c1-b9ad5e20fa5e)
+
 
 ## Installation
 
